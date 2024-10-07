@@ -2,8 +2,6 @@
 
 export default function LoginButton() {
     return (
-        <div>
-            <button>Connexion</button>
-        </div>
+        <button>Connexion</button>
     )
 }

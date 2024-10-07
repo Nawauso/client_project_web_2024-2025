@@ -1,0 +1,64 @@
+$color-text: #ffffff;
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('../Images/BackgroundNetflux.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+
+}
+
+nav{
+  width: 100%;
+  margin: 0px auto 40px auto;
+  background-color: transparent;
+  position: sticky;
+  top: 0px;
+}
+
+nav ul{
+  list-style-type: none;
+}
+
+nav li{
+  float: left;
+  width: 20%;/*100% divisé par le nombre d'éléments de menu*/
+  text-align: center;/*Centre le texte dans les éléments de menu*/
+}
+
+/*Evite que le menu n'ait une hauteur nulle*/
+nav ul::after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+nav a{
+  display: block; /*Toute la surface sera cliquable*/
+  text-decoration: none;
+  color: $color-text;
+  border-bottom: 2px solid transparent;/*Evite le décalage des éléments sous le menu à cause de la bordure en :hover*/
+  padding: 10px 0px;/*Agrandit le menu et espace la bordure du texte*/
+}
+
+nav a:hover{
+  color: orange;
+  border-bottom: 2px solid gold;
+}
+
+ul {
+  padding-left: 0px;
+}
+
+button {
+  background-color: transparent;
+  color: $color-text;
+  cursor: pointer;
+  border: none;
+}
+
+

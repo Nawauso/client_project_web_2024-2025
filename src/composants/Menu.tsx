@@ -6,7 +6,7 @@ import {useNavigate} from "react-router";
 
 export default function Menu(){
     const navigate = useNavigate();
-    const goToNetflux = () => { navigate('/login');
+    const goToNetflux = () => { navigate('/netflux');
     console.log("Dans fonction goToNetflux")}
     const goToComptes = () => { navigate('/comptes') }
     const goToFavoris = () => { navigate('/favoris') }

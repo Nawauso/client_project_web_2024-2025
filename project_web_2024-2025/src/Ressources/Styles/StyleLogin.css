@@ -1,0 +1,42 @@
+label {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  background-color: rgba(5, 5, 5, 0.55);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 1rem;
+  border: black 1px solid;
+}
+form input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url("../Images/BackgroundNetflux.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background-color: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+}
+
+/*# sourceMappingURL=StyleLogin.css.map */

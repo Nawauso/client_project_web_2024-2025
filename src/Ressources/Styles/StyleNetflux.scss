@@ -11,7 +11,6 @@ body {
   background-position: center;
   margin: 0;
   padding: 0;
-
 }
 
 nav{
@@ -55,12 +54,14 @@ nav a:hover{
 ul {
   padding-left: 0px;
 }
+nav last-child{
+  display: flex;
+}
 
-button {
+nav button {
   background-color: transparent;
   color: $color-text;
   cursor: pointer;
   border: none;
+  width: 100%;
 }
-
-

@@ -52,11 +52,16 @@ ul {
   padding-left: 0px;
 }
 
-button {
+nav last-child {
+  display: flex;
+}
+
+nav button {
   background-color: transparent;
   color: #ffffff;
   cursor: pointer;
   border: none;
+  width: 100%;
 }
 
 /*# sourceMappingURL=StyleNetflux.css.map */

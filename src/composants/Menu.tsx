@@ -1,6 +1,6 @@
 //date : 07/10/2024
 
-import LoginButton from "./LoginButton";
+import LoginButton from "./LoginButton.tsx";
 import "../Ressources/Styles/StyleNetflux.scss";
 import {useNavigate} from "react-router";
 

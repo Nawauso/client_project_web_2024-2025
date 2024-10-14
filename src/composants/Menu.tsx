@@ -3,10 +3,15 @@
 import LoginButton from "./LoginButton.tsx";
 import "../Ressources/Styles/StyleNetflux.scss";
 import {useNavigate} from "react-router";
+import axios from "axios";
 
 export default function Menu(){
     const CurrentPage = window.location.pathname;
     const navigate = useNavigate();
+    const fetchAPI = async () => {
+        const response = await axios.get("http://localhost:8080/api");
+        console.log(response.data.films);
+    };
 
     const goToNetflux = () => {
         console.log("Dans fonction goToNetflux")
@@ -14,6 +19,7 @@ export default function Menu(){
             console.log("Move to /netflux")
             navigate('/netflux');
         }
+        fetchAPI();
     }
 
     const goToComptes = () => {

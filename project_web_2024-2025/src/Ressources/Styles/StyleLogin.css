@@ -3,7 +3,7 @@ label {
   font-size: 1.5rem;
   font-weight: bold;
   padding: 0.5rem;
-  background-color: rgba(53, 43, 43, 0.59);
+  background-color: rgba(5, 5, 5, 0.55);
 }
 
 form {
@@ -30,6 +30,13 @@ body {
   background-position: center;
   margin: 0;
   padding: 0;
+}
+
+button {
+  background-color: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
 }
 
 /*# sourceMappingURL=StyleLogin.css.map */

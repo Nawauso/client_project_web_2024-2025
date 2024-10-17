@@ -3,6 +3,7 @@
 import {useState} from "react";
 import LoginButton from "./LoginButton.tsx";
 import "../Ressources/Styles/StyleLogin.scss"
+import {SignButton} from "./SignButton.tsx";
 
 export default function LoginPage() {
 
@@ -16,6 +17,7 @@ export default function LoginPage() {
             <label htmlFor="password">Mot de passe</label>
             <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} />
             <LoginButton />
+            <SignButton />
         </form>
     )
 }

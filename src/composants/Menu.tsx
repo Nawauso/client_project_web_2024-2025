@@ -10,7 +10,7 @@ export default function Menu(){
     const navigate = useNavigate();
     const fetchAPI = async () => {
         const response = await axios.get("http://localhost:8080/api");
-        console.log(response.data.films);
+        console.log(response.data);
     };
 
     const goToNetflux = () => {

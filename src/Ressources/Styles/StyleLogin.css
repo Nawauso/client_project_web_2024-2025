@@ -1,12 +1,4 @@
-label {
-  color: #ffffff;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 0.5rem;
-  background-color: rgba(5, 5, 5, 0.55);
-}
-
-form {
+.loginPage form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,10 +7,23 @@ form {
   gap: 1rem;
   border: black 1px solid;
 }
-form input {
+.loginPage form input {
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 0.3rem;
+}
+.loginPage button {
+  background-color: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+}
+.loginPage label {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  background-color: rgba(5, 5, 5, 0.55);
 }
 
 body {
@@ -30,13 +35,6 @@ body {
   background-position: center;
   margin: 0;
   padding: 0;
-}
-
-button {
-  background-color: transparent;
-  color: #ffffff;
-  cursor: pointer;
-  border: none;
 }
 
 /*# sourceMappingURL=StyleLogin.css.map */

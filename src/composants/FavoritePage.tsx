@@ -5,6 +5,7 @@ export default function FavoritePage() {
         <>
             <Menu/>
             <h1>FavoritePage</h1>
+
         </>
     )
 }

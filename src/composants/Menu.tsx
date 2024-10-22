@@ -1,7 +1,7 @@
 //date : 07/10/2024
 
 import LoginButton from "./LoginButton.tsx";
-import "../Ressources/Styles/StyleNetflux.scss";
+import "../Ressources/Styles/StylesMenu.scss";
 import {useNavigate} from "react-router";
 import axios from "axios";
 
@@ -54,13 +54,19 @@ export default function Menu(){
             }
     }
 
-    return <nav>
-        <ul>
-            <li><a onClick={goToNetflux}>Principal</a></li>
-            <li><a onClick={goToComptes}>Comptes</a></li>
-            <li><a onClick={goToFavoris}>Favoris</a></li>
-            <li><a onClick={goToCriteres}>Critères</a></li>
-            <li><a ><LoginButton></LoginButton></a></li>
-        </ul>
-    </nav>;
+    return (
+    <>
+        <div className="menu">
+        <nav>
+            <ul>
+                <li><a onClick={goToNetflux}>Principal</a></li>
+                <li><a onClick={goToComptes}>Comptes</a></li>
+                <li><a onClick={goToFavoris}>Favoris</a></li>
+                <li><a onClick={goToCriteres}>Critères</a></li>
+                <li><a><LoginButton></LoginButton></a></li>
+            </ul>
+        </nav>
+        </div>
+    </>
+    )
 }

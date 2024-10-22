@@ -5,6 +5,7 @@ export default function AccountPage() {
         <>
             <Menu/>
             <h1>AccountPage</h1>
+
         </>
     )
 }

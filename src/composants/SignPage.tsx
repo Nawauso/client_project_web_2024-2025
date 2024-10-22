@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router";
 import React from "react";
+import "../Ressources/Styles/StyleLogin.scss"
 
 export function SignPage() {
 
@@ -12,13 +13,15 @@ export function SignPage() {
     }
 
     return (
-        <form>
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" required />
-            <label htmlFor="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required />
-            <button onClick={backToLogPage}>Retour</button>
-            <button type="submit">S'inscrire</button>
-        </form>
+        <div className="loginPage">
+            <form>
+                <label htmlFor="email">Email</label>
+                <input type="email" id="email" name="email" required/>
+                <label htmlFor="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required/>
+                <button onClick={backToLogPage}>Retour</button>
+                <button type="submit">S'inscrire</button>
+            </form>
+        </div>
     )
 }

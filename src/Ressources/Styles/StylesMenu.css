@@ -1,15 +1,4 @@
 @charset "UTF-8";
-body {
-  font-family: Arial, sans-serif;
-  background-image: url("../Images/BackgroundNetflux.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  margin: 0;
-  padding: 0;
-}
-
 nav {
   width: 100%;
   margin: 0px auto 40px auto;
@@ -64,4 +53,4 @@ nav button {
   width: 100%;
 }
 
-/*# sourceMappingURL=StyleNetflux.css.map */
+/*# sourceMappingURL=StylesMenu.css.map */

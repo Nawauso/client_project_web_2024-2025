@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import LoginButton from "./LoginButton.tsx";
-import "../Ressources/Styles/StyleLogin.scss"
+import "../Ressources/Styles/StyleLogin.scss";
 import {SignButton} from "./SignButton.tsx";
 
 export default function LoginPage() {
@@ -11,6 +11,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('')
 
     return (
+        <div className="loginPage">
         <form>
             <label htmlFor="username">Nom d'utilisateur</label>
             <input type="text" placeholder="Nom d'utilisateur" value={username} onChange={e => setUsername(e.target.value)} />
@@ -19,5 +20,6 @@ export default function LoginPage() {
             <LoginButton />
             <SignButton />
         </form>
+        </div>
     )
 }

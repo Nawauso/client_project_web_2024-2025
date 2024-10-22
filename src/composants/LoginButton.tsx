@@ -1,6 +1,7 @@
 //date : 06/10/2024
 
 import {useNavigate} from "react-router";
+import React from "react";
 
 export default function LoginButton() {
     const navigate = useNavigate();
@@ -11,21 +12,21 @@ export default function LoginButton() {
         return CurrentPage;
     }
 
-    const ListPages = ["/netflux", "/login", "/comptes", "/favoris", "/criteres"];
+    const ListPages = ["/netflux", "/comptes", "/favoris", "/criteres"];
 
-    const CheckLog = () => {
+    function Checklog(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        event.preventDefault();
         console.log("Dans fonction CheckLog")
         const CurrentPage = getCurrentPage();
-        if(ListPages.includes(CurrentPage)) {
-            if(CurrentPage === "/login") {
-                navigate('/netflux');
-            } else {
-                navigate('/login');
-            }
+        if (!ListPages.includes(CurrentPage)) {
+            navigate("/netflux");
+        } else {
+            navigate("/login");
         }
     }
 
+
     return (
-        <button onClick={CheckLog}>Connexion</button>
+        <button onClick={Checklog}>Connexion</button>
     )
 }

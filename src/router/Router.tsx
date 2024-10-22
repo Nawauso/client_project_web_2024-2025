@@ -2,6 +2,7 @@ import {Routes, Route} from 'react-router-dom';
 import LoginPage from "../composants/LoginPage.tsx";
 import NetfluxPage from "../composants/NetfluxPage.tsx";
 import Menu from "../composants/Menu.tsx";
+import {SignPage} from "../composants/SignPage.tsx";
 export function Router() {
 
     return <Routes>
@@ -10,6 +11,7 @@ export function Router() {
         <Route path={"/comptes"} element={<Menu/>}/>
         <Route path={"/favoris"} element={<Menu/>}/>
         <Route path={"/criteres"} element={<Menu/>}/>
+        <Route path={"/inscription"} element={<SignPage/>}/>
         <Route path="/" element={<LoginPage/>}/>
         <Route path="*" element={<div>404</div>}/>
     </Routes>

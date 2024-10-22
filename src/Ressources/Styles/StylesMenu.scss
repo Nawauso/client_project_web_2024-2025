@@ -1,38 +1,45 @@
 $color-text: #ffffff;
-nav{
+
+nav {
   width: 100%;
   margin: 0px auto 40px auto;
-  background-color: transparent;
-  position: sticky;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent par défaut */
+  position: fixed;
   top: 0px;
+  left: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease; /* Transition pour l'effet fluide */
 }
 
-nav ul{
+nav.solid {
+  background-color: #000000; /* Arrière-plan opaque solide */
+}
+
+nav ul {
   list-style-type: none;
 }
 
-nav li{
+nav li {
   float: left;
-  width: 20%;/*100% divisé par le nombre d'éléments de menu*/
-  text-align: center;/*Centre le texte dans les éléments de menu*/
+  width: 20%;
+  text-align: center;
 }
 
-/*Evite que le menu n'ait une hauteur nulle*/
-nav ul::after{
+nav ul::after {
   content: "";
   display: table;
   clear: both;
 }
 
-nav a{
-  display: block; /*Toute la surface sera cliquable*/
+nav a {
+  display: block;
   text-decoration: none;
   color: $color-text;
-  border-bottom: 2px solid transparent;/*Evite le décalage des éléments sous le menu à cause de la bordure en :hover*/
-  padding: 10px 0px;/*Agrandit le menu et espace la bordure du texte*/
+  border-bottom: 2px solid transparent;
+  padding: 10px 0px;
 }
 
-nav a:hover{
+nav a:hover {
   color: orange;
   border-bottom: 2px solid gold;
 }
@@ -40,7 +47,8 @@ nav a:hover{
 ul {
   padding-left: 0px;
 }
-nav last-child{
+
+nav last-child {
   display: flex;
 }
 
@@ -50,4 +58,8 @@ nav button {
   cursor: pointer;
   border: none;
   width: 100%;
+}
+
+.menu {
+  padding-top: 60px;
 }

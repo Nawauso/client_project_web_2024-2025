@@ -1,0 +1,62 @@
+.film-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));  // Grille flexible
+  gap: 20px;  // Espacement entre les boîtes
+  padding: 20px;
+  justify-items: center;
+}
+
+.FilmBox {
+  background-color: rgba(153, 0, 255, 0.7);  // Couleur bleue traditionnelle avec transparence
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Fixer une taille uniforme pour toutes les boîtes */
+  height: 400px;  // Hauteur fixe pour toutes les boîtes
+  box-sizing: border-box;
+
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;  // Taille maximale pour l'image
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    margin-top: 10px;
+    flex-grow: 1;
+    text-align: justify;
+    padding: 10px;
+    border: 1px solid black;  // Encadré en noir
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.7);  // Fond noir avec transparence
+    color: white;  // Couleur du texte blanche pour contraster avec le fond
+    overflow-y: auto;  // Ajoute le scroll vertical
+    max-height: 120px;  // Hauteur maximale pour le texte (ajuste comme souhaité)
+  }
+}
+
+/* Media query pour les téléphones */
+@media (max-width: 600px) {
+  .film-container {
+    grid-template-columns: 1fr 1fr;  // Deux boîtes côte à côte sur petits écrans
+  }
+}
+

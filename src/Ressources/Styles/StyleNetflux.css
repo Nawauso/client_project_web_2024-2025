@@ -1,0 +1,60 @@
+@charset "UTF-8";
+.film-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+}
+
+.FilmBox {
+  background-color: rgba(153, 0, 255, 0.7);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  /* Fixer une taille uniforme pour toutes les boîtes */
+  height: 400px;
+  box-sizing: border-box;
+}
+.FilmBox h1 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+.FilmBox img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.FilmBox p {
+  font-size: 1rem;
+  margin-top: 10px;
+  flex-grow: 1;
+  text-align: justify;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  overflow-y: auto;
+  max-height: 120px;
+}
+
+/* Media query pour les téléphones */
+@media (max-width: 600px) {
+  .film-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/*# sourceMappingURL=StyleNetflux.css.map */

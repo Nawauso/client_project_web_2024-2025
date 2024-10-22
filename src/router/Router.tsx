@@ -1,7 +1,6 @@
 import {Routes, Route} from 'react-router-dom';
 import LoginPage from "../composants/LoginPage.tsx";
 import NetfluxPage from "../composants/NetfluxPage.tsx";
-import {HomePage} from "../composants/HomePage.tsx";
 import Menu from "../composants/Menu.tsx";
 export function Router() {
 
@@ -11,7 +10,7 @@ export function Router() {
         <Route path={"/comptes"} element={<Menu/>}/>
         <Route path={"/favoris"} element={<Menu/>}/>
         <Route path={"/criteres"} element={<Menu/>}/>
-        <Route path="/" element={<HomePage/>}/>
+        <Route path="/" element={<LoginPage/>}/>
         <Route path="*" element={<div>404</div>}/>
     </Routes>
 }

@@ -18,7 +18,7 @@ export default function NetfluxPage() {
     const fetchAPI = async () => {
         try {
             const response = await axios.get("http://localhost:8080/api/films"); // URL de l'API
-            setFilms(response.data); // Met à jour l'état avec les données récupérées
+            setFilms(response.data.genres[0]); // Met à jour l'état avec les données récupérées
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
         }
@@ -38,7 +38,7 @@ export default function NetfluxPage() {
         return (
             <div className="FilmBox">
                 <h1>{film.title}</h1>
-                <img src={film.imageUrl} alt={film.title} />
+                <img src={film.imageUrl} alt={film.title}/>
                 <p>{film.overview}</p> {/* Affiche directement la description complète */}
             </div>
         );
@@ -47,6 +47,7 @@ export default function NetfluxPage() {
     return (
         <>
             <Menu />
+
             <h1>Netflux</h1>
             <div className="film-container">
                 {films.length > 0 ? (

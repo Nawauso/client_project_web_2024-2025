@@ -18,7 +18,7 @@ export default function AccountPage() {
         try {
             const response = await axios.get("http://localhost:8080/api/genres"); // URL de l'API
 
-            console.log(response.data.genres);
+            console.log(response);
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
         }

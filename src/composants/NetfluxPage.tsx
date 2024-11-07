@@ -18,7 +18,7 @@ export default function NetfluxPage() {
     const fetchAPI = async () => {
         try {
             const response = await axios.get("http://localhost:8080/api/films"); // URL de l'API
-            setFilms(response.data.genres[0]); // Met à jour l'état avec les données récupérées
+            setFilms(response.data); // Met à jour l'état avec les données récupérées
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
         }

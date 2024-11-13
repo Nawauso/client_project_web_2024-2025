@@ -7,7 +7,7 @@ import axios from "axios";
 interface Film {
     id: number;
     title: string;
-    imageUrl: string;
+    poster_path: string;
     overview: string;
 }
 
@@ -37,8 +37,8 @@ export default function NetfluxPage() {
     function FilmBox({ film }: { film: Film }) {
         return (
             <div className="FilmBox">
-                <h1>{film.title}</h1>
-                <img src={film.imageUrl} alt={film.title}/>
+                <img src={`https://image.tmdb.org/t/p/original${film.poster_path}`} alt={film.title}/>
+                {/*<h1>{film.title}</h1>*/}
                 <p>{film.overview}</p> {/* Affiche directement la description complète */}
             </div>
         );

@@ -1,0 +1,107 @@
+.app {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.main {
+  border: 1px solid #000;
+  padding: 20px;
+  width: 100%;
+  background-color: #5e84ff;
+}
+.main .section {
+  margin-bottom: 20px;
+}
+.main .section h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.main .section .options {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.main .section .circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  margin: 5px;
+}
+.main .section .genre-container {
+  padding: 10px;
+  border: 1px solid #000;
+  margin: 5px;
+}
+.main .save-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: center;
+}
+.main .genre-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.main .GenreBox {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.main .GenreBox:hover {
+  background-color: #e0e0e0;
+  border-color: #ccc;
+}
+.main .GenreBox:active {
+  background-color: #d0d0d0;
+}
+.main .genre-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.main .ProviderBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 25%;
+  width: auto;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.main .ProviderBox:hover {
+  background-color: #eaeaea;
+  border-color: #ccc;
+}
+.main .ProviderBox:active {
+  background-color: #ddd;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.main .ProviderBox img {
+  width: max-content;
+  height: max-content;
+  object-fit: contain;
+  margin-bottom: 8px;
+  padding-inline: 2px;
+}
+.main .ProviderBox p {
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+
+/*# sourceMappingURL=StyleCriteriaPage.css.map */

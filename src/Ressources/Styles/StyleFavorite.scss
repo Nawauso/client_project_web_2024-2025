@@ -1,9 +1,12 @@
 .film-favorite-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  width: 80%; /* Toujours une taille relative */
+  max-width: 400px; /* Taille maximale pour les écrans larges */
+  margin: 20px auto; /* Espacement supérieur et inférieur */
   padding: 20px;
-  margin: 20px;
   border: 1px solid #000;
   border-radius: 20px;
   background-color: rgba(153, 0, 255, 0.64);
@@ -12,35 +15,112 @@
   transition: all 0.3s ease;
 
   img {
-    width: 100%;
-    height: 60%;
-    border-radius: 4px;
-    margin-bottom: 10px;
-
+    width: 244px; /* Largeur fixe relative au container */
+    height: 366px; /* Hauteur plus grande */
+    object-fit: cover; /* Ajuste l'image pour remplir tout l'espace sans déformer */
+    border-radius: 10px; /* Coins légèrement arrondis */
+    margin-bottom: 15px; /* Espacement sous l'image */
   }
 
-  h1 {
-    font-size: 1.4rem;
-    margin-bottom: 2px;
-    color: #fff;
-    justify-content: center;
-  }
   h2 {
-    font-size: 1.2rem;
+    width: 328px;
+    height: 26px;
+    font-size: clamp(0.7rem, 5vw, 1rem); /* La taille varie entre 1rem et 1.4rem selon la largeur de l'écran */
     margin-bottom: 2px;
     color: #fff;
+    text-align: center;
+    white-space: nowrap; /* Empêche le texte de se diviser en plusieurs lignes */
+    overflow: hidden; /* Cache le texte qui dépasse */
   }
-    p {
-        font-size: 1rem;
-        margin-top: 10px;
-        flex-grow: 1;
-        text-align: justify;
-        padding: 10px;
-        border: 1px solid black;
-        border-radius: 4px;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        overflow-y: auto;
-        max-height: 120px;
-    }
+
+  h3 {
+    width: 328px;
+    height: 26px;
+    font-size: clamp(0.7rem, 4vw, 1rem); /* Taille fluide avec une limite */
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+
+  p {
+    font-size: 1rem;
+    text-align: justify;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    overflow-y: auto;
+    max-height: 150px; /* Fixe la hauteur maximale du texte */
+    min-height: 150px; /* Assure que le conteneur ait toujours une hauteur minimale */
+    width: 90%; /* Assure que le texte occupe toute la largeur disponible */
+  }
 }
+
+.button-favorite-container {
+  display: flex;
+  justify-content: center; /* Centre le bouton */
+  margin-top: 20px;
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px; /* Bouton arrondi */
+    background-color: #9900ff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #6600cc; /* Changement de couleur au survol */
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) { /* Tablettes et petits écrans */
+  .film-favorite-container {
+    max-width: 80%; /* S'adapte encore mieux */
+    padding: 15px; /* Réduction du padding */
+  }
+
+  img {
+    max-height: 60vh; /* Plus de hauteur pour les petits écrans */
+  }
+
+  h1, h2 {
+    font-size: 1.2rem; /* Texte légèrement plus petit */
+  }
+
+  p {
+    font-size: 0.9rem; /* Ajustement de la taille de police */
+  }
+}
+
+@media (max-width: 480px) { /* Écrans de téléphone très petits */
+  .film-favorite-container {
+
+    padding: 15px;
+  }
+
+  img {
+    max-height: 40vh; /* Réduction de la hauteur de l'image */
+  }
+
+  h1, h2 {
+    font-size: 1rem; /* Texte encore plus compact */
+  }
+
+  p {
+    font-size: 0.8rem; /* Taille réduite du texte */
+  }
+
+  .button-favorite-container button {
+    font-size: 0.9rem; /* Bouton légèrement plus petit */
+    padding: 8px 15px; /* Ajustement du padding */
+  }
+}
+

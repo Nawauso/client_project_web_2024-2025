@@ -15,7 +15,6 @@ interface Genre {
     id: number;
     name: string;
 }
-
 export default function FavoritePage() {
     const [films, setFilms] = useState<Film[]>([]);
     const [genres, setGenres] = useState<Genre[]>([]);
@@ -25,7 +24,7 @@ export default function FavoritePage() {
         try {
             const response = await axios.get("http://localhost:8080/api/films");
             setFilms(response.data);
-            setRandomFilm(response.data);
+            setRandomFilm(response.data); // Sélectionne un film au hasard
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
         }
@@ -46,28 +45,13 @@ export default function FavoritePage() {
     }, []);
 
     const getMovieGender = (genre_ids: number[]) => {
-        let genre_names = "";
-        genre_ids.forEach((genre_id) => {
-            const genre = genres.find((genre) => genre.id === genre_id);
-            if (genre) {
-                genre_names += genre.name + ", ";
-            }
-        });
-        return genre_names.slice(0, -2);
-    };
-
-    const FilmBox = ({ film }: { film: Film }) => {
-        return (
-            <div className="FilmBox-favorite">
-                <img
-                    src={`https://image.tmdb.org/t/p/original${film.poster_path}`}
-                    alt={film.title}
-                />
-                <h1>{film.title}</h1>
-                <h2>{getMovieGender(film.genre_ids)}</h2>
-                <p>{film.overview}</p>
-            </div>
-        );
+        return genre_ids
+            .map((genre_id) => {
+                const genre = genres.find((genre) => genre.id === genre_id);
+                return genre ? genre.name : null;
+            })
+            .filter(Boolean)
+            .join(", ");
     };
 
     const setRandomFilm = (films: Film[]) => {
@@ -78,14 +62,26 @@ export default function FavoritePage() {
     };
 
     const getNewMovie = () => {
-        setRandomFilm(films);
+        setRandomFilm(films); // Met à jour uniquement les données
     };
 
     return (
         <>
             <Menu />
             <div className="film-favorite-container">
-                {currentFilm ? <FilmBox film={currentFilm} /> : <p>Chargement des films...</p>}
+                {currentFilm ? (
+                    <>
+                        <img
+                            src={`https://image.tmdb.org/t/p/original${currentFilm.poster_path}`}
+                            alt={currentFilm.title}
+                        />
+                        <h2>{currentFilm.title}</h2>
+                        <h3>{getMovieGender(currentFilm.genre_ids)}</h3>
+                        <p>{currentFilm.overview}</p>
+                    </>
+                ) : (
+                    <p>Chargement des films...</p>
+                )}
             </div>
             <div className="button-favorite-container">
                 <button onClick={getNewMovie}>Film suivant</button>

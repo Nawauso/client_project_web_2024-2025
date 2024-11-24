@@ -13,6 +13,8 @@
   color: #333;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative; /* Important pour l'animation du swipe */
+  overflow: hidden; /* Empêche de voir les éléments en dehors du conteneur */
 
   img {
     width: 244px; /* Largeur fixe relative au container */
@@ -43,7 +45,6 @@
     overflow: hidden;
   }
 
-
   p {
     font-size: 1rem;
     text-align: justify;
@@ -56,6 +57,17 @@
     max-height: 150px; /* Fixe la hauteur maximale du texte */
     min-height: 150px; /* Assure que le conteneur ait toujours une hauteur minimale */
     width: 90%; /* Assure que le texte occupe toute la largeur disponible */
+  }
+
+  /* Animations pour le swipe */
+  &.swipe-left {
+    transform: translateX(-150%) rotate(-20deg);
+    opacity: 0;
+  }
+
+  &.swipe-right {
+    transform: translateX(150%) rotate(20deg);
+    opacity: 0;
   }
 }
 
@@ -79,48 +91,3 @@
     }
   }
 }
-
-/* Responsive Design */
-@media (max-width: 768px) { /* Tablettes et petits écrans */
-  .film-favorite-container {
-    max-width: 80%; /* S'adapte encore mieux */
-    padding: 15px; /* Réduction du padding */
-  }
-
-  img {
-    max-height: 60vh; /* Plus de hauteur pour les petits écrans */
-  }
-
-  h1, h2 {
-    font-size: 1.2rem; /* Texte légèrement plus petit */
-  }
-
-  p {
-    font-size: 0.9rem; /* Ajustement de la taille de police */
-  }
-}
-
-@media (max-width: 480px) { /* Écrans de téléphone très petits */
-  .film-favorite-container {
-
-    padding: 15px;
-  }
-
-  img {
-    max-height: 40vh; /* Réduction de la hauteur de l'image */
-  }
-
-  h1, h2 {
-    font-size: 1rem; /* Texte encore plus compact */
-  }
-
-  p {
-    font-size: 0.8rem; /* Taille réduite du texte */
-  }
-
-  .button-favorite-container button {
-    font-size: 0.9rem; /* Bouton légèrement plus petit */
-    padding: 8px 15px; /* Ajustement du padding */
-  }
-}
-

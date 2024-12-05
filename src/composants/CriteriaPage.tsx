@@ -1,100 +1,66 @@
-import Menu from "./Menu.tsx";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import Menu from "./Menu";
 import "../Ressources/Styles/StyleCriteriaPage.scss";
-
-interface Genre {
-    id: number;
-    name: string;
-}
-
-interface Provider {
-    "logo_Path": string,
-    "provider_Name": string,
-    "provider_ID": number
-}
+import { fetchGenres, fetchProviders } from "./ApiService";
+import { Genre} from "../models/Genre.ts";
+import { Provider } from "../models/Provider.ts";
+import GenreBox from "./GenreBox";
+import ProviderBox from "./ProviderBox";
 
 export default function CriteriaPage() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [providers, setProviders] = useState<Provider[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const fetchAPIGenres = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/api/genres"); // URL de l'API
-            setGenres(response.data);
-            console.log(response);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des genres :", error);
-        }
-    };
-
-    async function fetchAPIProviders() {
-        try {
-            const response = await axios.get("http://localhost:8080/api/providers"); // URL de l'API
-            setProviders(response.data);
-            console.log(response);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des providers :", error);
-        }
-    }
-
-    // useEffect pour appeler l'API au montage du composant
     useEffect(() => {
-        fetchAPIGenres();
-        fetchAPIProviders();
+        const fetchData = async () => {
+            try {
+                const [genresData, providersData] = await Promise.all([
+                    fetchGenres(),
+                    fetchProviders(),
+                ]);
+                setGenres(genresData);
+                setProviders(providersData);
+            } catch (error) {
+                console.error("Erreur lors de la récupération des données :", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
-
-    function createGenreBox(genre: Genre) {
-        return <GenreBox key={genre.id} genre={genre} />;
-    }
-
-    function GenreBox({ genre }: { genre: Genre }) {
-        return (
-            <button className="GenreBox">
-                {genre.name}
-            </button>
-        );
-    }
-
-    function createProviderBox(providers: Provider) {
-        return <ProviderBox key={providers.provider_ID} provider={providers} />;
-    }
-
-    function ProviderBox({ provider }: { provider: Provider }) {
-        return (
-            <button className="ProviderBox">
-                <img
-                    src={`https://image.tmdb.org/t/p/original${provider.logo_Path}`}
-                    alt={`Logo de ${provider.provider_Name}`}
-                />
-                {/*<p>{provider.provider_Name}</p>*/}
-            </button>
-        );
-    }
-
 
     return (
         <>
-            <Menu/>
+            <Menu />
             <div className="app">
                 <div className="main">
                     <div className="section abonnement">
                         <h3>Sélection de l'abonnement</h3>
                         <div className="genre-container">
-                            {providers.length > 0 ? (
-                                providers.map((provider) => createProviderBox(provider)) // Mapper sur les genres récupérés pour afficher chaque GenreBox
+                            {isLoading ? (
+                                <p>Chargement des abonnements...</p>
+                            ) : providers.length > 0 ? (
+                                providers.map((provider) => (
+                                    <ProviderBox key={provider.provider_ID} provider={provider} />
+                                ))
                             ) : (
-                                <p>Chargement des genres...</p>
+                                <p>Aucun abonnement disponible.</p>
                             )}
                         </div>
                     </div>
                     <div className="section genre">
                         <h3>Sélection des genres</h3>
                         <div className="genre-container">
-                            {genres.length > 0 ? (
-                                genres.map((genre) => createGenreBox(genre)) // Mapper sur les genres récupérés pour afficher chaque GenreBox
-                            ) : (
+                            {isLoading ? (
                                 <p>Chargement des genres...</p>
+                            ) : genres.length > 0 ? (
+                                genres.map((genre) => (
+                                    <GenreBox key={genre.id} genre={genre} />
+                                ))
+                            ) : (
+                                <p>Aucun genre disponible.</p>
                             )}
                         </div>
                     </div>
@@ -102,5 +68,5 @@ export default function CriteriaPage() {
                 </div>
             </div>
         </>
-    )
+    );
 }

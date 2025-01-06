@@ -1,5 +1,6 @@
 import Menu from "./Menu.tsx";
 import { useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable"; // Importer react-swipeable
 import axios from "axios";
 import "../Ressources/Styles/StyleFavorite.scss";
 
@@ -21,11 +22,6 @@ export default function FavoritePage() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [currentFilm, setCurrentFilm] = useState<Film | null>(null);
     const [swipeDirection, setSwipeDirection] = useState<string>("");
-
-    // Variables pour capturer les positions de touché
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const swipeThreshold = 100; // Distance minimale du swipe en pixels
 
     const fetchAPI = async () => {
         try {
@@ -68,53 +64,30 @@ export default function FavoritePage() {
         }
     };
 
-    const getNewMovie = () => {
-        setRandomFilm(films); // Met à jour uniquement les données
-    };
+    // Gérer le swipe avec react swipeable
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: () => handleSwipe("left"),
+        onSwipedRight: () => handleSwipe("right"),
+        preventScrollOnSwipe: true, // Bloque le scroll vertical/latéral lors d'un swipe
+        delta: 10, // Distance minimale en pixels avant de considérer un geste comme un swipe
+        trackMouse: true, // Permet le test avec la souris
+    });
 
-    // Fonction pour gérer le début du swipe
-    const handleTouchStart = (event: React.TouchEvent) => {
-        touchStartX = event.changedTouches[0].screenX;
-    };
 
-    // Fonction pour gérer la fin du swipe
-    const handleTouchEnd = (event: React.TouchEvent) => {
-        touchEndX = event.changedTouches[0].screenX;
-        event.preventDefault(); // Empêche tout comportement par défaut du navigateur (comme le scrolling)
-        handleSwipe();
-    };
-
-    // Fonction qui définit la direction du swipe et change de film après l'animation
-    const handleSwipe = () => {
-        const swipeDistance = touchEndX - touchStartX;
-
-        // Si le swipe est inférieur au seuil, on ne fait rien
-        if (Math.abs(swipeDistance) < swipeThreshold) {
-            setSwipeDirection(""); // Réinitialiser l'animation sans changer de film
-            return;
-        }
-
-        // Si le swipe est suffisant, on considère le swipe comme valide
-        if (swipeDistance < 0) {
-            setSwipeDirection("swipe-left");
-        } else {
-            setSwipeDirection("swipe-right");
-        }
-
-        // Après l'animation de swipe, on change le film
+    const handleSwipe = (direction: string) => {
+        setSwipeDirection(direction === "left" ? "swipe-left" : "swipe-right");
         setTimeout(() => {
-            setRandomFilm(films); // Change de film après un délai
-            setSwipeDirection(""); // Réinitialise la direction du swipe pour préparer le prochain
-        }, 200); // Temps d'animation de 500ms
+            setRandomFilm(films);
+            setSwipeDirection(""); // Réinitialiser après l'animation
+        }, 500); // Temps d'animation
     };
 
     return (
         <>
             <Menu />
             <div
+                {...swipeHandlers} // Applique les gestionnaires de swipe ici
                 className={`film-favorite-container ${swipeDirection}`}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
             >
                 {currentFilm ? (
                     <>
@@ -131,7 +104,7 @@ export default function FavoritePage() {
                 )}
             </div>
             <div className="button-favorite-container">
-                <button onClick={getNewMovie}>Film suivant</button>
+                <button onClick={() => setRandomFilm(films)}>Film suivant</button>
             </div>
         </>
     );

@@ -91,3 +91,7 @@
     }
   }
 }
+
+html, body {
+  overflow-x: hidden; /* Empêche le scroll horizontal */
+}

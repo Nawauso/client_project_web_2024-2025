@@ -85,4 +85,8 @@
   background-color: #6600cc; /* Changement de couleur au survol */
 }
 
+html, body {
+  overflow-x: hidden; /* Empêche le scroll horizontal */
+}
+
 /*# sourceMappingURL=StyleFavorite.css.map */

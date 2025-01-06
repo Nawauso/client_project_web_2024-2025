@@ -21,6 +21,7 @@ export default function CriteriaPage() {
                 ]);
                 setGenres(genresData);
                 setProviders(providersData);
+                //console.log("Genres et providers récupérés :", genresData, providers);
             } catch (error) {
                 console.error("Erreur lors de la récupération des données :", error);
             } finally {
@@ -43,7 +44,7 @@ export default function CriteriaPage() {
                                 <p>Chargement des abonnements...</p>
                             ) : providers.length > 0 ? (
                                 providers.map((provider) => (
-                                    <ProviderBox key={provider.provider_ID} provider={provider} />
+                                    <ProviderBox key={provider.id} provider={provider} />
                                 ))
                             ) : (
                                 <p>Aucun abonnement disponible.</p>

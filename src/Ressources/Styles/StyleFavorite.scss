@@ -9,7 +9,7 @@
   padding: 20px;
   border: 1px solid #000;
   border-radius: 20px;
-  background-color: rgba(153, 0, 255, 0.64);
+  background-color: rgb(30, 26, 224);
   color: #333;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -80,14 +80,14 @@
     padding: 10px 20px;
     border: none;
     border-radius: 20px; /* Bouton arrondi */
-    background-color: #9900ff;
+    background-color: #1e1ae0;
     color: white;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: #6600cc; /* Changement de couleur au survol */
+      background-color: rgba(30, 26, 222, 0.54); /* Changement de couleur au survol */
     }
   }
 }

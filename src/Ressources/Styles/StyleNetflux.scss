@@ -1,18 +1,17 @@
 .film-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));  // Grille flexible
-  gap: 20px;  // Espacement entre les boîtes
+  grid-template-columns: repeat(2, 1fr); // Toujours 2 colonnes
+  gap: 20px; // Espacement entre les boîtes
   padding: 20px;
   justify-items: center;
 }
 
 .FilmBox {
-  background-color: rgba(153, 0, 255, 0.7);
-  border: 1px solid #ccc;
+  background-color: rgba(46, 46, 195, 0.49);
+  border: none; // Suppression des bordures
   border-radius: 8px;
-  padding: 20px;
-  width: 100%;
-  max-width: 400px;
+  overflow: hidden; // Assure que l'image ne dépasse pas les limites
+  width: 100%; // Prend toute la largeur disponible
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -20,43 +19,41 @@
   align-items: center;
   justify-content: space-between;
 
-  /* Fixer une taille uniforme pour toutes les boîtes */
-  height: 400px;  // Hauteur fixe pour toutes les boîtes
-  box-sizing: border-box;
-
-  h1 {
-    font-size: 1.4rem;
-    margin-bottom: 2px;
+  img {
+    width: 100%;
+    height: auto; // Laisse l'image s'adapter à la largeur
+    object-fit: cover; // Affiche l'image entière
   }
 
-  img {
-    width: 8rem;
-    height: auto;
-    //max-height: 200px;  // Taille maximale pour l'image
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 10px;
+  h2 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #fff;
   }
 
   p {
     font-size: 1rem;
     margin-top: 10px;
-    flex-grow: 1;
-    text-align: justify;
     padding: 10px;
-    border: 1px solid black;  // Encadré en noir
+    background-color: rgba(0, 0, 0, 0.7); // Fond noir avec transparence
+    color: white; // Texte blanc pour contraste
     border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.7);  // Fond noir avec transparence
-    color: white;  // Couleur du texte blanche pour contraster avec le fond
-    overflow-y: auto;  // Ajoute le scroll vertical
-    max-height: 120px;  // Hauteur maximale pour le texte (ajuste comme souhaité)
+    text-align: justify;
+    overflow-y: auto; // Permet le scroll si le texte dépasse
+    max-height: 100px; // Limite la hauteur maximale pour le texte
   }
 }
 
-/* Media query pour les téléphones */
+/* Media query pour les grands écrans */
+@media (min-width: 800px) {
+  .film-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // Plus de colonnes sur grand écran
+  }
+}
+
+/* Media query pour les petits écrans */
 @media (max-width: 600px) {
   .film-container {
-    grid-template-columns: 1fr 1fr;  // Deux boîtes côte à côte sur petits écrans
+    grid-template-columns: repeat(2, 1fr); // Toujours 2 colonnes sur petits écrans
   }
 }
-

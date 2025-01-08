@@ -16,7 +16,7 @@ export default function NetfluxPage() {
     const [loading, setLoading] = useState(false);
     const [allFilmsLoaded, setAllFilmsLoaded] = useState(false);
 
-    const fetchFilms = async () => {
+    const fetchAPIFilms = async () => {
         try {
             setLoading(true);
             const response = await axios.get("http://localhost:8080/api/films"); // URL de l'API
@@ -39,7 +39,7 @@ export default function NetfluxPage() {
             await axios.post("http://localhost:8080/api/films/reset-pagination"); // Réinitialise la pagination côté serveur
             setFilms([]); // Réinitialise la liste des films côté client
             setAllFilmsLoaded(false); // Autorise le chargement des films
-            fetchFilms(); // Recharge les premiers films
+            fetchAPIFilms(); // Recharge les premiers films
         } catch (error) {
             console.error("Erreur lors de la réinitialisation de la pagination :", error);
         }
@@ -47,7 +47,7 @@ export default function NetfluxPage() {
 
     // Charger les premiers films au montage du composant
     useEffect(() => {
-        fetchFilms();
+        fetchAPIFilms();
     }, []);
 
     // Fonction pour créer un FilmBox pour chaque film
@@ -69,9 +69,6 @@ export default function NetfluxPage() {
     return (
         <>
             <Menu />
-
-            <h1>Netflux</h1>
-
             <div className="film-container">
                 {films.length > 0 ? (
                     films.map((film) => createFilmBox(film)) // Mapper sur les films récupérés pour afficher chaque FilmBox
@@ -81,7 +78,7 @@ export default function NetfluxPage() {
             </div>
 
             {!allFilmsLoaded && (
-                <button onClick={fetchFilms} disabled={loading}>
+                <button onClick={fetchAPIFilms} disabled={loading}>
                     {loading ? "Chargement..." : "Charger plus de films"}
                 </button>
             )}

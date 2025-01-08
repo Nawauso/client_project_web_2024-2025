@@ -7,60 +7,38 @@ import "../Ressources/Styles/StyleFavorite.scss";
 interface Film {
     id: number;
     title: string;
-    poster_path: string;
+    imageUrl: string;
     overview: string;
     genre_ids: [];
 }
 
-interface Genre {
-    id: number;
-    name: string;
-}
-
 export default function FavoritePage() {
     const [films, setFilms] = useState<Film[]>([]);
-    const [genres, setGenres] = useState<Genre[]>([]);
-    const [currentFilm, setCurrentFilm] = useState<Film | null>(null);
+    const [currentFilmIndex, setCurrentFilmIndex] = useState<number>(0);
     const [swipeDirection, setSwipeDirection] = useState<string>("");
 
     const fetchAPI = async () => {
         try {
             const response = await axios.get("http://localhost:8080/api/films");
-            setFilms(response.data);
-            setRandomFilm(response.data); // Sélectionne un film au hasard
+            setFilms((prevFilms) => [...prevFilms, ...response.data]); // Ajoute les nouveaux films à la liste existante
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
         }
     };
 
-    const fetchAPIGenres = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/api/genres");
-            setGenres(response.data);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des genres :", error);
-        }
-    };
-
+    // Charge les films au montage du composant
     useEffect(() => {
         fetchAPI();
-        fetchAPIGenres();
     }, []);
 
-    const getMovieGender = (genre_ids: number[]) => {
-        return genre_ids
-            .map((genre_id) => {
-                const genre = genres.find((genre) => genre.id === genre_id);
-                return genre ? genre.name : null;
-            })
-            .filter(Boolean)
-            .join(", ");
-    };
-
-    const setRandomFilm = (films: Film[]) => {
-        if (films.length > 0) {
-            const randomIndex = Math.floor(Math.random() * films.length);
-            setCurrentFilm(films[randomIndex]);
+    const getNextFilms = () => {
+        if (currentFilmIndex < films.length - 1) {
+            // Passe au film suivant si disponible
+            setCurrentFilmIndex((prevIndex) => prevIndex + 1);
+        } else {
+            // Charge les nouveaux films si on atteint la fin de la liste
+            fetchAPI();
+            setCurrentFilmIndex(0); // Réinitialise à 0 pour afficher les nouveaux films
         }
     };
 
@@ -73,14 +51,15 @@ export default function FavoritePage() {
         trackMouse: true, // Permet le test avec la souris
     });
 
-
     const handleSwipe = (direction: string) => {
         setSwipeDirection(direction === "left" ? "swipe-left" : "swipe-right");
         setTimeout(() => {
-            setRandomFilm(films);
+            getNextFilms(); // Passe au film suivant après un swipe
             setSwipeDirection(""); // Réinitialiser après l'animation
         }, 500); // Temps d'animation
     };
+
+    const currentFilm = films[currentFilmIndex]; // Film actuel basé sur l'index
 
     return (
         <>
@@ -92,11 +71,10 @@ export default function FavoritePage() {
                 {currentFilm ? (
                     <>
                         <img
-                            src={`https://image.tmdb.org/t/p/original${currentFilm.poster_path}`}
+                            src={`https://image.tmdb.org/t/p/original${currentFilm.imageUrl}`}
                             alt={currentFilm.title}
                         />
                         <h2>{currentFilm.title}</h2>
-                        <h3>{getMovieGender(currentFilm.genre_ids)}</h3>
                         <p>{currentFilm.overview}</p>
                     </>
                 ) : (
@@ -104,7 +82,7 @@ export default function FavoritePage() {
                 )}
             </div>
             <div className="button-favorite-container">
-                <button onClick={() => setRandomFilm(films)}>Film suivant</button>
+                <button onClick={getNextFilms}>Film suivant</button>
             </div>
         </>
     );

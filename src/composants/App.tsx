@@ -4,14 +4,17 @@
 //import NetfluxPage from "./NetfluxPage.tsx";
 import {Router} from "../router/Router.tsx";
 import {BrowserRouter} from "react-router-dom";
+import {ContextNetfluxProvider} from "./ContextNetfluxProvider.tsx";
 
 
 function App() {
 
   return (
-      <BrowserRouter>
-        <Router/>
-      </BrowserRouter>
+      <ContextNetfluxProvider>
+          <BrowserRouter>
+              <Router/>
+          </BrowserRouter>
+      </ContextNetfluxProvider>
   )
 }
 

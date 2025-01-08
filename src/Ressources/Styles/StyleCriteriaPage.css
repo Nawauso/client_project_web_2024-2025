@@ -9,6 +9,7 @@
   padding: 20px;
   width: 100%;
   background-color: rgba(30, 26, 222, 0);
+  color: #ffffff;
 }
 .main .section {
   margin-bottom: 20px;
@@ -26,12 +27,12 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid #000;
+  border: 1px solid #ffffff;
   margin: 5px;
 }
 .main .section .genre-container {
   padding: 10px;
-  border: 1px solid #000;
+  border: 1px solid #ffffff;
   border-radius: 20px;
   margin: 5px;
 }
@@ -49,19 +50,17 @@
 }
 .main .GenreBox {
   background-color: #1357dc;
-  color: #333;
+  color: #ffffff;
   padding: 5px;
   border-radius: 20px;
   border: 1px solid #ddd;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.main .GenreBox:hover {
-  background-color: #e0e0e0;
-  border-color: #ccc;
-}
-.main .GenreBox:active {
-  background-color: #d0d0d0;
+.main .GenreBox.selected {
+  background-color: #0501b5;
+  color: #ffffff;
+  border: 1px solid #ffffff;
 }
 .main .genre-container {
   display: flex;
@@ -83,13 +82,10 @@
   height: 4rem;
   width: 4rem;
 }
-.main .ProviderBox:hover {
-  background-color: #0501b6;
-  border-color: #ccc;
-}
-.main .ProviderBox:active {
-  background-color: #ddd;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+.main .ProviderBox.selected {
+  background-color: #0501b5;
+  color: #333;
+  border: 1px solid #ddd;
 }
 .main .ProviderBox img {
   width: 100%;

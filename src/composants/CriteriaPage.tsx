@@ -7,6 +7,7 @@ import { Provider } from "../models/Provider.ts";
 import GenreBox from "./GenreBox";
 import ProviderBox from "./ProviderBox";
 
+
 export default function CriteriaPage() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [providers, setProviders] = useState<Provider[]>([]);

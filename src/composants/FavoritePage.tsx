@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable"; // Importer react-swipeable
 import axios from "axios";
 import "../Ressources/Styles/StyleFavorite.scss";
+import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
 
 interface Film {
     id: number;
@@ -16,10 +17,12 @@ export default function FavoritePage() {
     const [films, setFilms] = useState<Film[]>([]);
     const [currentFilmIndex, setCurrentFilmIndex] = useState<number>(0);
     const [swipeDirection, setSwipeDirection] = useState<string>("");
+    const { SelectedGenres, SelectedProviders} = useNetfluxContext();
+
 
     const fetchAPI = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/films/favorites");
+            const response = await axios.get("http://localhost:8080/api/films/favorites?genre_ids="+SelectedGenres+"&providers="+SelectedProviders); // URL de l'API
             setFilms((prevFilms) => [...prevFilms, ...response.data]); // Ajoute les nouveaux films à la liste existante
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);

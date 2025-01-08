@@ -2,11 +2,13 @@
 
 import "../Ressources/Styles/StylesMenu.scss";
 import {useNavigate} from "react-router";
+import {AuthContext} from "./AuthContext.tsx";
+import {useContext} from "react";
 
 export default function Menu(){
     const CurrentPage = window.location.pathname;
     const navigate = useNavigate();
-
+    const auth = useContext(AuthContext);
 
     const goToNetflux = () => {
         console.log("Dans fonction goToNetflux")
@@ -44,7 +46,7 @@ export default function Menu(){
         console.log("Dans fonction goToLogin")
         if(!CheckRedirection("/login")){
             console.log("Move to /login")
-            navigate('/login');
+            auth?.logout();
         }
     }
 

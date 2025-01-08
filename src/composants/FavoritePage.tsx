@@ -19,7 +19,7 @@ export default function FavoritePage() {
 
     const fetchAPI = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/films");
+            const response = await axios.get("http://localhost:8080/api/films/favorites");
             setFilms((prevFilms) => [...prevFilms, ...response.data]); // Ajoute les nouveaux films à la liste existante
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
@@ -38,7 +38,6 @@ export default function FavoritePage() {
         } else {
             // Charge les nouveaux films si on atteint la fin de la liste
             fetchAPI();
-            setCurrentFilmIndex(0); // Réinitialise à 0 pour afficher les nouveaux films
         }
     };
 

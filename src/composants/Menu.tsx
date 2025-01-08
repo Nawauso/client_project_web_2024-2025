@@ -1,13 +1,14 @@
 //date : 07/10/2024
 
-import LoginButton from "./LoginButton.tsx";
 import "../Ressources/Styles/StylesMenu.scss";
 import {useNavigate} from "react-router";
+import {AuthContext} from "./AuthContext.tsx";
+import {useContext} from "react";
 
 export default function Menu(){
     const CurrentPage = window.location.pathname;
     const navigate = useNavigate();
-
+    const auth = useContext(AuthContext);
 
     const goToNetflux = () => {
         console.log("Dans fonction goToNetflux")
@@ -41,6 +42,14 @@ export default function Menu(){
         }
     }
 
+    const goToLogin = () => {
+        console.log("Dans fonction goToLogin")
+        if(!CheckRedirection("/login")){
+            console.log("Move to /login")
+            auth?.logout();
+        }
+    }
+
     function CheckRedirection(page: string) {
         if (CurrentPage === page) {
             return true;
@@ -58,7 +67,7 @@ export default function Menu(){
                 <li><a onClick={goToComptes}>Comptes</a></li>
                 <li><a onClick={goToFavoris}>Favoris</a></li>
                 <li><a onClick={goToCriteres}>Critères</a></li>
-                <li><a><LoginButton></LoginButton></a></li>
+                <li><a onClick={goToLogin}>Déconnexion</a></li>
             </ul>
         </nav>
         </div>

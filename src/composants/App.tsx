@@ -4,6 +4,7 @@
 //import NetfluxPage from "./NetfluxPage.tsx";
 import {Router} from "../router/Router.tsx";
 import {BrowserRouter} from "react-router-dom";
+import { AuthProvider } from "./AuthContext";
 import {ContextNetfluxProvider} from "./ContextNetfluxProvider.tsx";
 
 
@@ -12,7 +13,9 @@ function App() {
   return (
       <ContextNetfluxProvider>
           <BrowserRouter>
-              <Router/>
+              <AuthProvider>
+                <Router/>
+              </AuthProvider>
           </BrowserRouter>
       </ContextNetfluxProvider>
   )

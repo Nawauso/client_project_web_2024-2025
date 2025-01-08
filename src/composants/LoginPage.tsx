@@ -2,14 +2,17 @@ import { useState } from "react";
 import LoginButton from "./LoginButton";
 import "../Ressources/Styles/StyleLogin.scss";
 import { SignButton } from "./SignButton";
+import {useNavigate} from "react-router";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     function handleLoginSuccess() {
         console.log("Connexion réussie !");
+        navigate("/netflux");
         // Ajoute ici d'autres actions après une connexion réussie si nécessaire
     }
 

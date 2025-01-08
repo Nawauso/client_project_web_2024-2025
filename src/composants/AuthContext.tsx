@@ -12,8 +12,12 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<string | null>(null);
-    const [token, setToken] = useState<string | null>(null);
+    const loadFromStorage = (key: string, defaultValue: any) => {
+        const stored = localStorage.getItem(key);
+        return stored !== null ? stored : defaultValue;
+    };
+    const [user, setUser] = useState<string>(() => loadFromStorage("user", null));
+    const [token, setToken] = useState<string>(() => loadFromStorage("token", null));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,8 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const logout = () => {
-        setUser(null);
-        setToken(null);
+        //setUser(null);
+        //setToken(null);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/login");

@@ -1,20 +1,15 @@
-
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 import React from "react";
 
-
-export function SignButton(){
-
+export function SignButton() {
     const navigate = useNavigate();
 
-    function goToSignPage(event: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    function goToSignPage(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault();
-        return navigate('/inscription');
+        navigate('/inscription');
     }
 
-
-
     return (
-        <button onClick={goToSignPage} >Inscription</button>
-    )
+        <button onClick={goToSignPage}>Inscription</button>
+    );
 }

@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
-import Menu from "./Menu";
-import "../Ressources/Styles/StyleCriteriaPage.scss";
-import { fetchGenres, fetchProviders } from "./ApiService";
-import { Genre} from "../models/Genre.ts";
-import { Provider } from "../models/Provider.ts";
-import GenreBox from "./GenreBox";
-import ProviderBox from "./ProviderBox";
-
+import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
+import {useContext, useEffect, useState} from "react";
+import {AuthContext} from "./AuthContext.tsx";
+import {Genre} from "../models/Genre.ts";
+import {fetchGenres, fetchProviders} from "./ApiService.ts";
+import {Provider} from "../models/Provider.ts";
+import axiosInstance from "./AxiosInstance.ts";
+import Menu from "./Menu.tsx";
+import ProviderBox from "./ProviderBox.tsx";
+import GenreBox from "./GenreBox.tsx";
 
 export default function CriteriaPage() {
+    const { SelectedGenres, SelectedProviders } = useNetfluxContext();
+    const user = useContext(AuthContext); // User reste une string
     const [genres, setGenres] = useState<Genre[]>([]);
     const [providers, setProviders] = useState<Provider[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +26,6 @@ export default function CriteriaPage() {
                 ]);
                 setGenres(genresData);
                 setProviders(providersData);
-                //console.log("Genres et providers récupérés :", genresData, providers);
             } catch (error) {
                 console.error("Erreur lors de la récupération des données :", error);
             } finally {
@@ -33,6 +36,29 @@ export default function CriteriaPage() {
         fetchData();
     }, []);
 
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            if (!user) {
+                alert("Utilisateur non connecté ou email manquant.");
+                setIsSaving(false);
+                return;
+            }
+
+            await axiosInstance.post(`/criterias`, {
+                userId: user.user, // Envoyer l'email de l'utilisateur comme `userId`
+                genreIds: SelectedGenres,
+                providerIds: SelectedProviders,
+            });
+            alert("Critères enregistrés avec succès !");
+        } catch (error) {
+            console.error("Erreur lors de l'enregistrement des critères :", error);
+            alert("Une erreur s'est produite lors de l'enregistrement des critères.");
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     return (
         <>
             <Menu />
@@ -40,7 +66,7 @@ export default function CriteriaPage() {
                 <div className="main">
                     <div className="section abonnement">
                         <h3>Sélection de l'abonnement</h3>
-                        <div className="genre-container">
+                        <div className="provider-container">
                             {isLoading ? (
                                 <p>Chargement des abonnements...</p>
                             ) : providers.length > 0 ? (
@@ -66,7 +92,13 @@ export default function CriteriaPage() {
                             )}
                         </div>
                     </div>
-                    <button className="save-button">Enregistrement des critères</button>
+                    <button
+                        className="save-button"
+                        onClick={handleSave}
+                        disabled={isSaving || SelectedGenres.length === 0 || SelectedProviders.length === 0}
+                    >
+                        {isSaving ? "Enregistrement en cours..." : "Enregistrement des critères"}
+                    </button>
                 </div>
             </div>
         </>

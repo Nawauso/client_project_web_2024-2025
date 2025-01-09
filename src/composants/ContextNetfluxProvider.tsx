@@ -1,4 +1,7 @@
 import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+import axiosInstance from "./AxiosInstance.ts";
+import {Genre} from "../models/Genre.ts";
+import {Provider} from "../models/Provider.ts";
 
 // Interface pour le type du contexte
 interface ContextType {
@@ -40,6 +43,28 @@ export const ContextNetfluxProvider = ({ children }: ContextProviderProps) => {
     useEffect(() => {
         localStorage.setItem("SelectedProviders", JSON.stringify(SelectedProviders));
     }, [SelectedProviders]);
+
+    const initializeFromServer = async (userId: string) => {
+        try {
+            const response = await axiosInstance.get(`/criterias/give`, {
+                params: { userId },
+            });
+            const { genres, providers } = response.data;
+
+            // Mettre à jour les états avec les données du serveur
+            setSelectedGenres(genres.map((genre: Genre) => genre.id));
+            setSelectedProviders(providers.map((provider: Provider) => provider.id));
+        } catch (error) {
+            console.error("Erreur lors de la récupération des données du serveur :", error);
+        }
+    };
+
+    useEffect(() => {
+        const userId = localStorage.getItem("userEmail"); // Récupérer l'email de l'utilisateur (ou autre identifiant)
+        if (userId) {
+            initializeFromServer(userId);
+        }
+    }, []);
 
     return (
         <contextNetfluxProvider.Provider

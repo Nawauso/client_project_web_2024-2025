@@ -1,13 +1,14 @@
-import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
 import {useContext, useEffect, useState} from "react";
+import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
 import {AuthContext} from "./AuthContext.tsx";
 import {Genre} from "../models/Genre.ts";
-import {fetchGenres, fetchProviders} from "./ApiService.ts";
 import {Provider} from "../models/Provider.ts";
+import {fetchGenres, fetchProviders} from "./ApiService.ts";
 import axiosInstance from "./AxiosInstance.ts";
 import Menu from "./Menu.tsx";
 import ProviderBox from "./ProviderBox.tsx";
 import GenreBox from "./GenreBox.tsx";
+import "../Ressources/Styles/StyleCriteriaPage.scss";
 
 export default function CriteriaPage() {
     const { SelectedGenres, SelectedProviders } = useNetfluxContext();
@@ -64,9 +65,10 @@ export default function CriteriaPage() {
             <Menu />
             <div className="app">
                 <div className="main">
+                    {/* Section des providers */}
                     <div className="section abonnement">
                         <h3>Sélection de l'abonnement</h3>
-                        <div className="provider-container">
+                        <div className="genre-container">
                             {isLoading ? (
                                 <p>Chargement des abonnements...</p>
                             ) : providers.length > 0 ? (
@@ -78,6 +80,8 @@ export default function CriteriaPage() {
                             )}
                         </div>
                     </div>
+
+                    {/* Section des genres */}
                     <div className="section genre">
                         <h3>Sélection des genres</h3>
                         <div className="genre-container">
@@ -92,10 +96,12 @@ export default function CriteriaPage() {
                             )}
                         </div>
                     </div>
+
+                    {/* Bouton de sauvegarde */}
                     <button
                         className="save-button"
                         onClick={handleSave}
-                        disabled={isSaving || SelectedGenres.length === 0 || SelectedProviders.length === 0}
+                        disabled={isSaving}
                     >
                         {isSaving ? "Enregistrement en cours..." : "Enregistrement des critères"}
                     </button>

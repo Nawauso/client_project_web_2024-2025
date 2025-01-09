@@ -60,6 +60,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("SelectedGenres");
+        localStorage.removeItem("SelectedProviders");
         navigate("/login");
     };
 

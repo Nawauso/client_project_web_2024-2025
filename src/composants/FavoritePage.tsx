@@ -1,73 +1,76 @@
 import Menu from "./Menu.tsx";
-import { useEffect, useState } from "react";
-import { useSwipeable } from "react-swipeable"; // Importer react-swipeable
+import { useContext, useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import "../Ressources/Styles/StyleFavorite.scss";
-import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
 import axiosInstance from "./AxiosInstance.ts";
+import { AuthContext } from "./AuthContext.tsx";
 
 interface Film {
     id: number;
     title: string;
     imageUrl: string;
     overview: string;
-    genre_ids: [];
+    genre_ids: number[];
 }
 
 export default function FavoritePage() {
     const [films, setFilms] = useState<Film[]>([]);
     const [currentFilmIndex, setCurrentFilmIndex] = useState<number>(0);
     const [swipeDirection, setSwipeDirection] = useState<string>("");
-    const { SelectedGenres, SelectedProviders} = useNetfluxContext();
+    const [isFetching, setIsFetching] = useState(false);
+    const user = useContext(AuthContext);
 
-
-    const fetchAPI = async () => {
+    // Charger les films directement depuis le serveur
+    const fetchFilms = async () => {
+        setIsFetching(true);
         try {
-            const response = await axiosInstance.get("/films/favorites?genre_ids="+SelectedGenres+"&providers="+SelectedProviders); // URL de l'API
-            setFilms((prevFilms) => [...prevFilms, ...response.data]); // Ajoute les nouveaux films à la liste existante
+            const response = await axiosInstance.post("/films/favorites", {
+                userId: user?.user, // Envoyer l'ID utilisateur dans le body
+            });
+
+            setFilms((prevFilms) => [...prevFilms, ...response.data]); // Ajouter les nouveaux films
         } catch (error) {
             console.error("Erreur lors de la récupération des films :", error);
+        } finally {
+            setIsFetching(false);
         }
     };
 
-    // Charge les films au montage du composant
     useEffect(() => {
-        fetchAPI();
+        fetchFilms(); // Charger les films au montage du composant
     }, []);
 
     const getNextFilms = () => {
         if (currentFilmIndex < films.length - 1) {
-            // Passe au film suivant si disponible
             setCurrentFilmIndex((prevIndex) => prevIndex + 1);
         } else {
-            // Charge les nouveaux films si on atteint la fin de la liste
-            fetchAPI();
+            fetchFilms(); // Charger les nouveaux films si on atteint la fin de la liste
         }
     };
 
-    // Gérer le swipe avec react swipeable
     const swipeHandlers = useSwipeable({
         onSwipedLeft: () => handleSwipe("left"),
         onSwipedRight: () => handleSwipe("right"),
-        preventScrollOnSwipe: true, // Bloque le scroll vertical/latéral lors d'un swipe
-        delta: 10, // Distance minimale en pixels avant de considérer un geste comme un swipe
-        trackMouse: true, // Permet le test avec la souris
+        preventScrollOnSwipe: true,
+        delta: 10,
+        trackMouse: true,
     });
 
     const handleSwipe = (direction: string) => {
         setSwipeDirection(direction === "left" ? "swipe-left" : "swipe-right");
         setTimeout(() => {
-            getNextFilms(); // Passe au film suivant après un swipe
-            setSwipeDirection(""); // Réinitialiser après l'animation
-        }, 500); // Temps d'animation
+            getNextFilms();
+            setSwipeDirection("");
+        }, 500);
     };
 
-    const currentFilm = films[currentFilmIndex]; // Film actuel basé sur l'index
+    const currentFilm = films[currentFilmIndex];
 
     return (
         <>
             <Menu />
             <div
-                {...swipeHandlers} // Applique les gestionnaires de swipe ici
+                {...swipeHandlers}
                 className={`film-favorite-container ${swipeDirection}`}
             >
                 {currentFilm ? (
@@ -80,11 +83,13 @@ export default function FavoritePage() {
                         <p>{currentFilm.overview}</p>
                     </>
                 ) : (
-                    <p>Chargement des films...</p>
+                    <p>{isFetching ? "Chargement des films..." : "Aucun film disponible."}</p>
                 )}
             </div>
             <div className="button-favorite-container">
-                <button onClick={getNextFilms}>Film suivant</button>
+                <button onClick={getNextFilms} disabled={isFetching}>
+                    {isFetching ? "Chargement..." : "Film suivant"}
+                </button>
             </div>
         </>
     );

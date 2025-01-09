@@ -14,13 +14,13 @@ export default function GenreBox({ genre }: GenreBoxProps) {
     useEffect(() => {
         const fetchSelectedGenres = async () => {
             try {
-                const response = await axiosInstance.get(`/criterias/give`, {
-                    params: { userId: localStorage.getItem("user") }, // Récupérer userId depuis localStorage ou contexte
+                const response = await axiosInstance.get(`/criterias/giveGenres`, {
+                    params: { userId: localStorage.getItem("user") },
                 });
 
                 const selectedGenres = response.data.map((g: Genre) => g.id);
+                setSelectedGenres(selectedGenres);
 
-                // Vérifier si le genre actuel est dans les genres sélectionnés
                 if (selectedGenres.includes(genre.id)) {
                     setIsSelected(true);
                 }
@@ -30,15 +30,16 @@ export default function GenreBox({ genre }: GenreBoxProps) {
         };
 
         fetchSelectedGenres();
-    }, [genre.id]);
+    }, [genre.id, setSelectedGenres]);
 
     function toggleGenres() {
         if (isSelected) {
             setSelectedGenres(SelectedGenres.filter((id) => id !== genre.id));
+            setIsSelected(false);
         } else {
             setSelectedGenres([...SelectedGenres, genre.id]);
+            setIsSelected(true);
         }
-        setIsSelected(!isSelected);
     }
 
     return (

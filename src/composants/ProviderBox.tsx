@@ -14,29 +14,31 @@ export default function ProviderBox({ provider }: ProviderBoxProps) {
     useEffect(() => {
         const fetchSelectedProviders = async () => {
             try {
-                const response = await axiosInstance.get(`/criterias/give`, {
-                    params: { userId: localStorage.getItem("user") }, // Récupérer userId depuis localStorage ou contexte
+                const response = await axiosInstance.get(`/criterias/giveProviders`, {
+                    params: { userId: localStorage.getItem("user") },
                 });
 
                 const selectedProviders = response.data.map((p: Provider) => p.id);
+                setSelectedProviders(selectedProviders);
 
-                // Vérifier si le genre actuel est dans les genres sélectionnés
                 if (selectedProviders.includes(provider.id)) {
                     setIsSelected(true);
                 }
             } catch (error) {
-                console.error("Erreur lors de la récupération des genres sélectionnés :", error);
+                console.error("Erreur lors de la récupération des providers sélectionnés :", error);
             }
         };
 
         fetchSelectedProviders();
-    }, [provider.id]);
+    }, [provider.id, setSelectedProviders]);
 
     function toggleProvider() {
         if (isSelected) {
             setSelectedProviders(SelectedProviders.filter((id) => id !== provider.id));
+            setIsSelected(false);
         } else {
             setSelectedProviders([...SelectedProviders, provider.id]);
+            setIsSelected(true);
         }
     }
 

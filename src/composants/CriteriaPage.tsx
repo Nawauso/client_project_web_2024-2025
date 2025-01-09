@@ -33,7 +33,8 @@ export default function CriteriaPage() {
                 setIsLoading(false);
             }
         };
-
+        console.log("Genres : " + SelectedGenres);
+        console.log("Providers : " + SelectedProviders);
         fetchData();
     }, []);
 
@@ -45,13 +46,15 @@ export default function CriteriaPage() {
                 setIsSaving(false);
                 return;
             }
-
+            console.log("Genres : " +SelectedGenres);
+            console.log("Providers : " + SelectedProviders);
             await axiosInstance.post(`/criterias`, {
                 userId: user.user, // Envoyer l'email de l'utilisateur comme `userId`
                 genreIds: SelectedGenres,
                 providerIds: SelectedProviders,
             });
             alert("Critères enregistrés avec succès !");
+
         } catch (error) {
             console.error("Erreur lors de l'enregistrement des critères :", error);
             alert("Une erreur s'est produite lors de l'enregistrement des critères.");

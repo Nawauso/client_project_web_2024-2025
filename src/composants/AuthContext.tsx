@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router";
 import axiosInstance from "./AxiosInstance.ts";
+import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
 
 type AuthContextType = {
     user: string | null;
@@ -20,6 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<string>(() => loadFromStorage("user", null));
     const [token, setToken] = useState<string>(() => loadFromStorage("token", null));
     const navigate = useNavigate();
+    const { setSelectedGenres, setSelectedProviders } = useNetfluxContext();
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -60,8 +62,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        localStorage.removeItem("SelectedGenres");
-        localStorage.removeItem("SelectedProviders");
+        setSelectedGenres([])
+        setSelectedProviders([])
         navigate("/login");
     };
 

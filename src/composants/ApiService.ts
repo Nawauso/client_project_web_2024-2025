@@ -1,15 +1,13 @@
-import axios from "axios";
 import { Genre} from "../models/Genre.ts";
 import { Provider } from "../models/Provider.ts";
-
-const API_BASE_URL = "http://localhost:8080/api";
+import axiosInstance from "./AxiosInstance.ts";
 
 export const fetchGenres = async (): Promise<Genre[]> => {
-    const response = await axios.get<Genre[]>(`${API_BASE_URL}/genres`);
+    const response = await axiosInstance.get<Genre[]>('/genres');
     return response.data;
 };
 
 export const fetchProviders = async (): Promise<Provider[]> => {
-    const response = await axios.get<Provider[]>(`${API_BASE_URL}/providers`);
+    const response = await axiosInstance.get<Provider[]>('/providers');
     return response.data;
 };

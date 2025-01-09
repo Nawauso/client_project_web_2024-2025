@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router";
+import axiosInstance from "./AxiosInstance.ts";
 
 type AuthContextType = {
     user: string | null;
@@ -21,18 +22,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
-        console.log("LocalStorage: storedToken", storedToken);
-        console.log("LocalStorage: storedUser", storedUser);
-        if (storedToken && storedUser) {
-            console.log(token)
-            setToken(storedToken);
-            console.log(token)
-            setUser(storedUser);
+        const storedToken = localStorage.getItem('token');
+        const storedUser = localStorage.getItem('user');
 
+        if (storedToken && storedUser) {
+            const verifyToken = async () => {
+                try {
+                    const response = await axiosInstance.get('/auth/verify');
+                    if (response.status === 200) {
+                        setToken(storedToken);
+                        setUser(storedUser);
+                    } else {
+                        logout();
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la vérification du token :", error);
+                    logout();
+                }
+            };
+
+            verifyToken();
         }
     }, []);
+
 
     useEffect(() => {
         console.log("AuthProvider: token updated", token);

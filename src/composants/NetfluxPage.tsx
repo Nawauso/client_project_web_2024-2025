@@ -1,8 +1,8 @@
-// date : 07/10/2024
 import Menu from "./Menu.tsx";
 import "../Ressources/Styles/StyleNetflux.scss";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState, useContext } from "react";
+import axiosInstance from "./AxiosInstance.ts";
+import { AuthContext } from "./AuthContext";
 
 interface Film {
     id: number;
@@ -16,10 +16,12 @@ export default function NetfluxPage() {
     const [loading, setLoading] = useState(false);
     const [allFilmsLoaded, setAllFilmsLoaded] = useState(false);
 
+    const auth = useContext(AuthContext);
+
     const fetchAPIFilms = async () => {
         try {
             setLoading(true);
-            const response = await axios.get("http://localhost:8080/api/films"); // URL de l'API
+            const response = await axiosInstance.get("/films");
             const newFilms = response.data;
 
             if (newFilms.length === 0) {
@@ -27,8 +29,12 @@ export default function NetfluxPage() {
             } else {
                 setFilms((prevFilms) => [...prevFilms, ...newFilms]); // Ajouter les nouveaux films
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erreur lors de la récupération des films :", error);
+
+            if (error.response?.status === 401 || error.response?.status === 403) {
+                auth?.logout(); // Déconnecte l'utilisateur si le token est invalide
+            }
         } finally {
             setLoading(false);
         }
@@ -36,12 +42,16 @@ export default function NetfluxPage() {
 
     const resetPagination = async () => {
         try {
-            await axios.post("http://localhost:8080/api/films/reset-pagination"); // Réinitialise la pagination côté serveur
+            await axiosInstance.post("/films/reset-pagination");
             setFilms([]); // Réinitialise la liste des films côté client
             setAllFilmsLoaded(false); // Autorise le chargement des films
             fetchAPIFilms(); // Recharge les premiers films
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erreur lors de la réinitialisation de la pagination :", error);
+
+            if (error.response?.status === 401 || error.response?.status === 403) {
+                auth?.logout(); // Déconnecte l'utilisateur si le token est invalide
+            }
         }
     };
 

@@ -34,12 +34,21 @@ export const ContextNetfluxProvider = ({ children }: ContextProviderProps) => {
 
     // Sauvegarder dans localStorage à chaque modification
     useEffect(() => {
+        if(SelectedGenres === null){
+            loadFromStorage("SelectedGenres", [])
+        }
         localStorage.setItem("SelectedGenres", JSON.stringify(SelectedGenres));
     }, [SelectedGenres]);
 
     useEffect(() => {
+        if(SelectedGenres === null){
+            loadFromStorage("SelectedProviders", [])
+        }
         localStorage.setItem("SelectedProviders", JSON.stringify(SelectedProviders));
     }, [SelectedProviders]);
+
+
+
 
     return (
         <contextNetfluxProvider.Provider

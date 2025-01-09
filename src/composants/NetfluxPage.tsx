@@ -62,7 +62,6 @@ export default function NetfluxPage() {
 
     // Fonction pour créer un FilmBox pour chaque film
     function createFilmBox(film: Film) {
-        console.log(film.imageUrl);
         return <FilmBox key={film.id} film={film} />;
     }
 

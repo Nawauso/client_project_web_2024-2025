@@ -1,8 +1,7 @@
 import {useEffect, useState} from "react";
 import {Genre} from "../models/Genre";
 import {Provider} from "../models/Provider";
-import {fetchGenres, fetchProviders} from "./ApiService";
-import axiosInstance from "./AxiosInstance";
+import {fetchGenres, fetchProviders, fetchSelectedCriteria, saveSelectedCriteria} from "./ApiService";
 import Menu from "./Menu";
 import ProviderBox from "./ProviderBox";
 import GenreBox from "./GenreBox";
@@ -20,16 +19,16 @@ export default function CriteriaPage() {
         let mounted = true;
         (async () => {
             try {
-                const [g, p] = await Promise.all([fetchGenres(), fetchProviders()]);
-
-                // ✅ NOUVEL APPEL BULK (plus d’anciennes routes giveProviders/giveGenres)
-                const { data: sel } = await axiosInstance.get('/criterias/selected');
-
+                const [g, p, sel] = await Promise.all([
+                    fetchGenres(),
+                    fetchProviders(),
+                    fetchSelectedCriteria(),
+                ]);
                 if (!mounted) return;
                 setGenres(g);
                 setProviders(p);
-                setSelectedGenres(Array.isArray(sel?.genres) ? sel.genres : []);
-                setSelectedProviders(Array.isArray(sel?.providers) ? sel.providers : []);
+                setSelectedGenres(sel.genres);
+                setSelectedProviders(sel.providers);
             } catch (e) {
                 console.error("Erreur lors du chargement des critères :", e);
             } finally {
@@ -50,11 +49,7 @@ export default function CriteriaPage() {
     const handleSave = async () => {
         setIsSaving(true);
         try {
-            // ✅ ENREGISTREMENT BULK
-            await axiosInstance.put('/criterias/selected', {
-                genres: selectedGenres,
-                providers: selectedProviders,
-            });
+            await saveSelectedCriteria(selectedGenres, selectedProviders);
             alert("Critères enregistrés avec succès !");
         } catch (e) {
             console.error("Erreur lors de l'enregistrement des critères :", e);

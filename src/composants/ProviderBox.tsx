@@ -1,4 +1,4 @@
-import { Provider } from "../models/Provider.ts";
+import { Provider } from "../models/Provider";
 
 type ProviderBoxProps = {
     provider: Provider;
@@ -14,7 +14,6 @@ export default function ProviderBox({ provider, selected, onToggle }: ProviderBo
             title={provider.name}
             type="button"
         >
-            {/* ⚠️ Si ton seed stocke déjà l’URL complète, utilise directement provider.logoUrl */}
             <img src={provider.logoUrl} alt={`Logo de ${provider.name}`} />
         </button>
     );

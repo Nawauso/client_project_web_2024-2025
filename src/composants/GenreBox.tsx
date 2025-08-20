@@ -1,4 +1,4 @@
-import { Genre } from "../models/Genre.ts";
+import { Genre } from "../models/Genre";
 
 type GenreBoxProps = {
     genre: Genre;

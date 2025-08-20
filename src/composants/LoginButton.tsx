@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
+import api from "./AxiosInstance";
 
 type LoginButtonProps = {
     username: string;
@@ -11,37 +12,22 @@ type LoginButtonProps = {
 export default function LoginButton({ username, password, onSuccess, onError }: LoginButtonProps) {
     const auth = useContext(AuthContext);
 
-    async function handleLogin(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        event.preventDefault();
-
-        console.log("Tentative de connexion avec :", { username, password });
-
+    async function handleLogin(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email: username, password }),
-            });
-
-            console.log("Réponse du serveur :", response);
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Données reçues :", data);
-
-                auth?.login(username, data.token); // Stocke le token dans le contexte et le localStorage
-                console.log("Token ajouté au localStorage :", data.token);
-                onSuccess();
-            } else {
-                const errorData = await response.json();
-                console.error("Erreur du serveur :", errorData);
-                onError(errorData.message || "Erreur de connexion.");
+            const { data } = await api.post("/auth/login", { email: username, password });
+            auth?.login(username, data.token);
+            onSuccess();
+        } catch (err: any) {
+            let message = "Erreur de connexion. Vérifie l'email/mot de passe.";
+            if (err.response) {
+                const ct = (err.response.headers?.["content-type"] || "") as string;
+                if (ct.includes("application/json")) message = err.response.data?.message || message;
+                else message = `Erreur ${err.response.status} : ${err.response.statusText}`;
+            } else if (err.request) {
+                message = "Impossible de joindre le serveur. Vérifie le port/API/CORS.";
             }
-        } catch (error) {
-            console.error("Erreur lors de l'appel API :", error);
-            onError("Une erreur s'est produite. Veuillez réessayer.");
+            onError(message);
         }
     }
 

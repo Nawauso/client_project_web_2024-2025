@@ -18,8 +18,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const stored = localStorage.getItem(key);
         return stored !== null ? stored : defaultValue;
     };
-    const [user, setUser] = useState<string>(() => loadFromStorage("user", null));
-    const [token, setToken] = useState<string>(() => loadFromStorage("token", null));
+    const [user, setUser] = useState<string | null>(() => loadFromStorage("user", null));
+    const [token, setToken] = useState<string | null>(() => loadFromStorage("token", null));
     const navigate = useNavigate();
     const { setSelectedGenres, setSelectedProviders } = useNetfluxContext();
 
@@ -62,8 +62,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        setSelectedGenres([])
-        setSelectedProviders([])
+        setToken(null);
+        setUser(null);
+        setSelectedGenres([]);
+        setSelectedProviders([]);
         navigate("/login");
     };
 

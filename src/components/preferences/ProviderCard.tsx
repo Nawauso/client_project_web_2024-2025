@@ -1,4 +1,4 @@
-import { Provider } from "../models/Provider";
+import { Provider } from "../../models/Provider";
 
 type ProviderBoxProps = {
     provider: Provider;

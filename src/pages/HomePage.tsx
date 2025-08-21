@@ -1,8 +1,9 @@
-import Menu from "./Menu.tsx";
+import Menu from "../components/layout/Navbar.tsx";
 import "../assets/styles/StyleNetflux.scss";
 import { useEffect, useRef, useState, useContext } from "react";
-import axiosInstance from "./AxiosInstance.ts";
-import { AuthContext } from "./AuthContext";
+import axiosInstance from "../api/AxiosInstance";
+import { AuthContext } from "../context/AuthContext";
+
 
 interface Film {
     id: number;

@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router";
-import axiosInstance from "./AxiosInstance.ts";
-import { useNetfluxContext } from "./ContextNetfluxProvider.tsx";
+import axiosInstance from "../api/AxiosInstance.ts";
+import { useNetfluxContext } from "./NetfluxContextProvider.tsx";
 
 type AuthContextType = {
     user: string | null;

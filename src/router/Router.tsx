@@ -1,11 +1,11 @@
 import {Routes, Route} from 'react-router-dom';
-import LoginPage from "../composants/LoginPage.tsx";
-import NetfluxPage from "../composants/NetfluxPage.tsx";
-import {SignPage} from "../composants/SignPage.tsx";
-import AccountPage from "../composants/AccountPage.tsx";
-import FavoritePage from "../composants/FavoritePage.tsx";
-import CriteriaPage from "../composants/CriteriaPage.tsx";
-import ProtectedRoute from "../composants/ProtectedRoute.tsx";
+import LoginPage from "../pages/LoginPage.tsx";
+import NetfluxPage from "../pages/HomePage.tsx";
+import {SignPage} from "../pages/RegisterPage.tsx";
+import AccountPage from "../pages/AccountPage.tsx";
+import FavoritePage from "../pages/FavoritesPage.tsx";
+import CriteriaPage from "../pages/CriteriaPage.tsx";
+import ProtectedRoute from "../components/auth/ProtectedRoute.tsx";
 export function Router() {
 
     return <Routes>

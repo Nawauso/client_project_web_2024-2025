@@ -2,8 +2,8 @@
 
 import { BrowserRouter } from "react-router-dom";
 import { Router } from "../router/Router";
-import { AuthProvider } from "./AuthContext";
-import { ContextNetfluxProvider } from "./ContextNetfluxProvider";
+import { AuthProvider } from "../context/AuthContext";
+import { ContextNetfluxProvider } from "../context/NetfluxContextProvider.tsx";
 
 /**
  * Ordre des providers :

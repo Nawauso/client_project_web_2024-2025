@@ -1,7 +1,7 @@
 import { useState } from "react";
-import LoginButton from "./LoginButton";
+import LoginButton from "../components/auth/LoginButton";
 import "../assets/styles/StyleLogin.scss";
-import { SignButton } from "./SignButton";
+import { SignButton } from "../components/auth/RegisterButton.tsx";
 import {useNavigate} from "react-router";
 
 export default function LoginPage() {

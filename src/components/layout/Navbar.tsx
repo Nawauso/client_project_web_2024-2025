@@ -2,7 +2,7 @@
 
 import "../Ressources/Styles/StylesMenu.scss";
 import {useNavigate} from "react-router";
-import {AuthContext} from "./AuthContext.tsx";
+import {AuthContext} from "../../context/AuthContext.tsx";
 import {useContext} from "react";
 
 export default function Menu(){

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../assets/styles/StyleAccountPage.scss";
-import axiosInstance from "./AxiosInstance";
-import Menu from "./Menu";
+import axiosInstance from "../api/AxiosInstance";
+import Menu from "../components/layout/Navbar.tsx";
 
 export default function AccountPage() {
     const [group, setGroup] = useState<any>(null); // Stocke les données du groupe

@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
-import api from "./AxiosInstance";
+import { AuthContext } from "../../context/AuthContext";
+import api from "../../api/AxiosInstance";
 
 type LoginButtonProps = {
     username: string;

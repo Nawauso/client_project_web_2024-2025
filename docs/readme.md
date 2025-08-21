@@ -107,3 +107,6 @@ Dépannage rapide
 - Seeds en erreur UNIQUE : les seeds sont idempotents, mais si vous changez de DB, supprimez l’ancien fichier SQLite ou corrigez DB_PATH.
 
 ### Licence Projet académique – usage pédagogique.
+
+# lien vidéo
+https://youtu.be/LY7pCXfE9es

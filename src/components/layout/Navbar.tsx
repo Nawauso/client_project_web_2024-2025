@@ -1,6 +1,6 @@
 //date : 07/10/2024
 
-import "../Ressources/Styles/StylesMenu.scss";
+import "../../assets/styles/Styles/StylesMenu.scss";
 import {useNavigate} from "react-router";
 import {AuthContext} from "../../context/AuthContext.tsx";
 import {useContext} from "react";

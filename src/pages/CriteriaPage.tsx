@@ -11,7 +11,7 @@ import Menu from "../components/layout/Navbar.tsx";
 import ProviderBox from "../components/preferences/ProviderCard.tsx";
 import GenreBox from "../components/preferences/GenreCard.tsx";
 import { useNetfluxContext } from "../context/NetfluxContextProvider.tsx";
-import "../assets/styles/StyleCriteriaPage.scss";
+import "../assets/styles/Styles/StyleCriteriaPage.scss";
 
 export default function CriteriaPage() {
     const [genres, setGenres] = useState<Genre[]>([]);

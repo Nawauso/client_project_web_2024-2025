@@ -1,7 +1,7 @@
 import Menu from "../components/layout/Navbar.tsx";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSwipeable } from "react-swipeable";
-import "../assets/styles/StyleFavorite.scss";
+import "../assets/styles/Styles/StyleFavorite.scss";
 import axiosInstance from "../api/AxiosInstance";
 import { AuthContext } from "../context/AuthContext";
 

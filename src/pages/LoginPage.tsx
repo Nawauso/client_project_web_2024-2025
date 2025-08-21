@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LoginButton from "../components/auth/LoginButton";
-import "../assets/styles/StyleLogin.scss";
+import "../assets/styles/Styles/StyleLogin.scss";
 import { SignButton } from "../components/auth/RegisterButton.tsx";
 import {useNavigate} from "react-router";
 

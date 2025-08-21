@@ -1,5 +1,5 @@
 import Menu from "../components/layout/Navbar.tsx";
-import "../assets/styles/StyleNetflux.scss";
+import "../assets/styles/Styles/StyleNetflux.scss";
 import { useEffect, useRef, useState, useContext } from "react";
 import axiosInstance from "../api/AxiosInstance";
 import { AuthContext } from "../context/AuthContext";

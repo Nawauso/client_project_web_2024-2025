@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import "../Ressources/Styles/StyleLogin.scss";
+import "../assets/styles/StyleLogin.scss";
 import axios from "axios";
 
 export function SignPage() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../Ressources/Styles/StyleAccountPage.scss";
+import "../assets/styles/StyleAccountPage.scss";
 import axiosInstance from "./AxiosInstance";
 import Menu from "./Menu";
 

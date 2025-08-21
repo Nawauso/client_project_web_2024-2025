@@ -16,3 +16,11 @@ Ce fût le grand avancement sur le serveur, les premiers sprints étaient beauco
 ### La suite...
 
 L'abandon progressif du scrum fût que nous n'avons que très peu de traces des sprints, beaucoup a été fait en présentiel sans notes, la seule historique étant les commits. La méthodologie n'a ainsi été pas respecté à partir du troisième sprint.
+
+### Reprise pour la troisième session
+
+Le projet a été repris début de la semaine pour refiner le peu de fonctionnalité qu'il reste. Toutes les fonctionnalités demandait on était implémenté.
+
+### Jour J
+
+En cette dernière journée disponible pour rendre le projet, nous avons refactor beaucoup de fichier et créer les testes unitaires. La vidéo de présentation a aussi été tourné. 

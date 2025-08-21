@@ -11,7 +11,7 @@ import Menu from "./Menu";
 import ProviderBox from "./ProviderBox";
 import GenreBox from "./GenreBox";
 import { useNetfluxContext } from "./ContextNetfluxProvider";
-import "../Ressources/Styles/StyleCriteriaPage.scss";
+import "../assets/styles/StyleCriteriaPage.scss";
 
 export default function CriteriaPage() {
     const [genres, setGenres] = useState<Genre[]>([]);

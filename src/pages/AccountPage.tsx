@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "wStyleAccountPage.scss";
+import "../assets/styles/Styles/StyleAccountPage.scss";
 import axiosInstance from "../api/AxiosInstance";
 import Menu from "../components/layout/Navbar.tsx";
 

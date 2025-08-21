@@ -53,8 +53,7 @@ export default function FavoritePage() {
 
             // ⬇️ Route correcte de ton serveur
             const response = await axiosInstance.post("/films/favorites", {
-                userId,              // email (ex: user@cool.com) ou id numérique
-                excludeIds,          // pour éviter de reproposer ceux déjà vus
+                excludeIds,
                 limit: 20,
                 page: 1,             // laissé à 1 : le service déduplique côté BE/FR
             });

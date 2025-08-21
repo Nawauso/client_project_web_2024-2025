@@ -17,22 +17,21 @@ interface Film {
 
 export default function FavoritePage() {
     const auth = useContext(AuthContext);
-    // IMPORTANT : le backend accepte un email OU un id numérique
-    const userId = auth?.user ?? localStorage.getItem("user") ?? "";
+    const { groupId } = useNetfluxContext(); // utile pour les votes de groupe
 
-    const { groupId } = useNetfluxContext(); // utile pour les votes
     const [films, setFilms] = useState<Film[]>([]);
     const [currentFilmIndex, setCurrentFilmIndex] = useState<number>(0);
     const [swipeDirection, setSwipeDirection] = useState<string>("");
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [triagedIds, setTriagedIds] = useState<Set<number>>(new Set());
-    const [skippedIds, setSkippedIds] = useState<number[]>([]);
+    const [triagedIds, setTriagedIds] = useState<Set<number>>(new Set()); // déjà likés/dislikés
+    const [skippedIds, setSkippedIds] = useState<number[]>([]);           // passés
     const [secondPass, setSecondPass] = useState<boolean>(false);
 
     const loadingMoreRef = useRef<boolean>(false);
 
+    // Exclure temporairement tout ce qu’on a déjà vu ou trié côté client
     const excludeIds = useMemo(() => {
         const allSeen = new Set<number>([
             ...triagedIds,
@@ -49,13 +48,11 @@ export default function FavoritePage() {
         setError(null);
 
         try {
-            if (!userId) throw new Error("Utilisateur non identifié (userId manquant).");
-
-            // ⬇️ Route correcte de ton serveur
+            // Le serveur récupère l’user depuis le JWT (AuthMiddleware)
             const response = await axiosInstance.post("/films/favorites", {
                 excludeIds,
                 limit: 20,
-                page: 1,             // laissé à 1 : le service déduplique côté BE/FR
+                page: 1, // le repo déduplique déjà côté BE/FR
             });
 
             const newFilms: Film[] = response.data ?? [];
@@ -66,7 +63,7 @@ export default function FavoritePage() {
             });
         } catch (e: any) {
             console.error("Erreur lors de la récupération des films :", e);
-            setError(e?.message ?? "Erreur inconnue lors du chargement des films.");
+            setError(e?.response?.data?.error ?? e?.message ?? "Erreur inconnue lors du chargement des films.");
         } finally {
             setIsFetching(false);
             loadingMoreRef.current = false;
@@ -74,7 +71,7 @@ export default function FavoritePage() {
     };
 
     useEffect(() => {
-        // Chargement initial
+        // Chargement initial (ou quand l’auth change d’état)
         setFilms([]);
         setCurrentFilmIndex(0);
         setTriagedIds(new Set());
@@ -82,14 +79,15 @@ export default function FavoritePage() {
         setSecondPass(false);
         fetchFilms();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId]); // re-fetch si l'utilisateur change
+    }, [auth?.isAuthenticated]);
 
     const saveGroupRank = async (filmId: number, delta: 1 | -1) => {
         try {
-            if (!groupId) return; // si pas de groupe, on peut ignorer le vote serveur
+            if (!groupId) return; // pas de groupe => on ignore l’envoi serveur
             await axiosInstance.post(`/groups/${groupId}/rank`, { filmId, delta });
         } catch (e) {
             console.error("Erreur lors de l'enregistrement du rang groupe :", e);
+            // on ne bloque pas l’UX pour autant
         }
     };
 
@@ -101,10 +99,9 @@ export default function FavoritePage() {
 
         if (!isFetching) {
             fetchFilms().then(() => {
+                // Après le fetch, si rien de nouveau, on repropose les skippés (seconde passe)
                 setTimeout(() => {
-                    const noMoreNew =
-                        films.length === 0 || currentFilmIndex >= films.length - 1;
-
+                    const noMoreNew = films.length === 0 || currentFilmIndex >= films.length - 1;
                     if (noMoreNew && !secondPass && skippedIds.length > 0) {
                         const skippedSet = new Set(skippedIds);
                         const requeue = films.filter((f) => skippedSet.has(f.id));
@@ -176,10 +173,7 @@ export default function FavoritePage() {
                 </div>
             )}
 
-            <div
-                {...swipeHandlers}
-                className={`film-favorite-container ${swipeDirection}`}
-            >
+            <div {...swipeHandlers} className={`film-favorite-container ${swipeDirection}`}>
                 {currentFilm ? (
                     <>
                         {currentFilm.imageUrl ? (

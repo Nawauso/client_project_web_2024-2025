@@ -1,10 +1,16 @@
-import {useEffect, useState} from "react";
-import {Genre} from "../models/Genre";
-import {Provider} from "../models/Provider";
-import {fetchGenres, fetchProviders, fetchSelectedCriteria, saveSelectedCriteria} from "./ApiService";
+import { useEffect, useState } from "react";
+import { Genre } from "../models/Genre";
+import { Provider } from "../models/Provider";
+import {
+    fetchGenres,
+    fetchProviders,
+    fetchSelectedCriteria,
+    saveSelectedCriteria,
+} from "./ApiService";
 import Menu from "./Menu";
 import ProviderBox from "./ProviderBox";
 import GenreBox from "./GenreBox";
+import { useNetfluxContext } from "./ContextNetfluxProvider";
 import "../Ressources/Styles/StyleCriteriaPage.scss";
 
 export default function CriteriaPage() {
@@ -14,6 +20,12 @@ export default function CriteriaPage() {
     const [selectedProviders, setSelectedProviders] = useState<number[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+
+    // Contexte global (FavoritePage lit ces valeurs)
+    const {
+        setSelectedGenres: setCtxGenres,
+        setSelectedProviders: setCtxProviders,
+    } = useNetfluxContext();
 
     useEffect(() => {
         let mounted = true;
@@ -25,32 +37,49 @@ export default function CriteriaPage() {
                     fetchSelectedCriteria(),
                 ]);
                 if (!mounted) return;
+
                 setGenres(g);
                 setProviders(p);
-                setSelectedGenres(sel.genres);
-                setSelectedProviders(sel.providers);
+                setSelectedGenres(sel.genres ?? []);
+                setSelectedProviders(sel.providers ?? []);
+
             } catch (e) {
                 console.error("Erreur lors du chargement des critères :", e);
             } finally {
                 if (mounted) setIsLoading(false);
             }
         })();
-        return () => { mounted = false; };
+        return () => {
+            mounted = false;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const toggleProvider = (id: number) => {
-        setSelectedProviders(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+        setSelectedProviders((prev) => {
+            const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+            setCtxProviders(next); // garder le contexte en phase
+            return next;
+        });
     };
 
     const toggleGenre = (id: number) => {
-        setSelectedGenres(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+        setSelectedGenres((prev) => {
+            const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+            setCtxGenres(next); // garder le contexte en phase
+            return next;
+        });
     };
 
     const handleSave = async () => {
         setIsSaving(true);
         try {
             await saveSelectedCriteria(selectedGenres, selectedProviders);
+            // Mettre à jour le contexte (par sécurité)
+            setCtxGenres(selectedGenres);
+            setCtxProviders(selectedProviders);
             alert("Critères enregistrés avec succès !");
+            // ❌ plus de navigation automatique
         } catch (e) {
             console.error("Erreur lors de l'enregistrement des critères :", e);
             alert("Une erreur s'est produite lors de l'enregistrement des critères.");

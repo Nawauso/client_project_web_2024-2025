@@ -1,74 +1,99 @@
-import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+import {
+    createContext,
+    useContext,
+    useMemo,
+    useState,
+    ReactNode,
+    useEffect,
+} from "react";
 
-// Interface pour le type du contexte
-interface ContextType {
-    SelectedGenres: number[];
-    setSelectedGenres: (value: number[]) => void;
-    SelectedProviders: number[];
-    setSelectedProviders: (value: number[]) => void;
-}
+/**
+ * Contexte global Netflux :
+ * - selectedGenres : ids de genres choisis
+ * - selectedProviders : ids de fournisseurs choisis
+ * - groupId : identifiant de groupe courant (optionnel)
+ *
+ * Fourni pour que CriteriaPage et FavoritePage partagent les mêmes sélections.
+ */
 
-// Interface pour les props du provider
-interface ContextProviderProps {
-    children: ReactNode;
-}
+type NetfluxContextType = {
+    selectedGenres: number[];
+    selectedProviders: number[];
+    groupId: string | null;
 
-// Création du contexte avec un type optionnel (undefined au départ)
-const contextNetfluxProvider = createContext<ContextType | undefined>(undefined);
+    setSelectedGenres: (ids: number[]) => void;
+    setSelectedProviders: (ids: number[]) => void;
+    setGroupId: (id: string | null) => void;
+};
 
-// Fournisseur de contexte pour Netflux
-export const ContextNetfluxProvider = ({ children }: ContextProviderProps) => {
-    // Charger les données depuis localStorage
-    const loadFromStorage = (key: string, defaultValue: any) => {
-        const stored = localStorage.getItem(key);
-        return stored ? JSON.parse(stored) : defaultValue;
+const NetfluxContext = createContext<NetfluxContextType | undefined>(undefined);
+
+export function ContextNetfluxProvider({ children }: { children: ReactNode }) {
+    const [selectedGenres, setSelectedGenresState] = useState<number[]>([]);
+    const [selectedProviders, setSelectedProvidersState] = useState<number[]>([]);
+    const [groupId, setGroupIdState] = useState<string | null>(null);
+
+    // Hydratation initiale depuis localStorage pour conserver l’état après refresh
+    useEffect(() => {
+        try {
+            const g = localStorage.getItem("netflux:selectedGenres");
+            const p = localStorage.getItem("netflux:selectedProviders");
+            const grp = localStorage.getItem("netflux:groupId");
+            if (g) setSelectedGenresState(JSON.parse(g));
+            if (p) setSelectedProvidersState(JSON.parse(p));
+            if (grp) setGroupIdState(grp);
+        } catch {
+            // ignore en cas d’erreur JSON/localStorage
+        }
+    }, []);
+
+    const setSelectedGenres = (ids: number[]) => {
+        setSelectedGenresState(ids);
+        try {
+            localStorage.setItem("netflux:selectedGenres", JSON.stringify(ids));
+        } catch {
+            // ignore
+        }
     };
 
-    // États partagés dans le contexte, avec initialisation depuis localStorage
-    const [SelectedGenres, setSelectedGenres] = useState<number[]>(() =>
-        loadFromStorage("SelectedGenres", [])
-    );
-    const [SelectedProviders, setSelectedProviders] = useState<number[]>(() =>
-        loadFromStorage("SelectedProviders", [])
-    );
-
-    // Sauvegarder dans localStorage à chaque modification
-    useEffect(() => {
-        if(SelectedGenres === null){
-            loadFromStorage("SelectedGenres", [])
+    const setSelectedProviders = (ids: number[]) => {
+        setSelectedProvidersState(ids);
+        try {
+            localStorage.setItem("netflux:selectedProviders", JSON.stringify(ids));
+        } catch {
+            // ignore
         }
-        localStorage.setItem("SelectedGenres", JSON.stringify(SelectedGenres));
-    }, [SelectedGenres]);
+    };
 
-    useEffect(() => {
-        if(SelectedGenres === null){
-            loadFromStorage("SelectedProviders", [])
+    const setGroupId = (id: string | null) => {
+        setGroupIdState(id);
+        try {
+            if (id) localStorage.setItem("netflux:groupId", id);
+            else localStorage.removeItem("netflux:groupId");
+        } catch {
+            // ignore
         }
-        localStorage.setItem("SelectedProviders", JSON.stringify(SelectedProviders));
-    }, [SelectedProviders]);
+    };
 
-
-
-
-    return (
-        <contextNetfluxProvider.Provider
-            value={{
-                SelectedGenres,
-                setSelectedGenres,
-                SelectedProviders,
-                setSelectedProviders,
-            }}
-        >
-            {children}
-        </contextNetfluxProvider.Provider>
+    const value = useMemo<NetfluxContextType>(
+        () => ({
+            selectedGenres,
+            selectedProviders,
+            groupId,
+            setSelectedGenres,
+            setSelectedProviders,
+            setGroupId,
+        }),
+        [selectedGenres, selectedProviders, groupId]
     );
-};
 
-// Hook personnalisé pour utiliser le contexte Netflux
-export const useNetfluxContext = (): ContextType => {
-    const context = useContext(contextNetfluxProvider);
-    if (!context) {
-        throw new Error("useNetfluxContext must be used within a ContextNetfluxProvider");
+    return <NetfluxContext.Provider value={value}>{children}</NetfluxContext.Provider>;
+}
+
+export function useNetfluxContext() {
+    const ctx = useContext(NetfluxContext);
+    if (!ctx) {
+        throw new Error("useNetfluxContext doit être utilisé dans <ContextNetfluxProvider />");
     }
-    return context;
-};
+    return ctx;
+}

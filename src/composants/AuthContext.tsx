@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router";
 import axiosInstance from "./AxiosInstance.ts";
-import {useNetfluxContext} from "./ContextNetfluxProvider.tsx";
+import { useNetfluxContext } from "./ContextNetfluxProvider.tsx";
 
 type AuthContextType = {
     user: string | null;
@@ -14,23 +14,25 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const loadFromStorage = (key: string, defaultValue: any) => {
+    const loadFromStorage = (key: string, defaultValue: string | null) => {
         const stored = localStorage.getItem(key);
         return stored !== null ? stored : defaultValue;
     };
-    const [user, setUser] = useState<string>(() => loadFromStorage("user", null));
-    const [token, setToken] = useState<string>(() => loadFromStorage("token", null));
+
+    const [user, setUser] = useState<string | null>(() => loadFromStorage("user", null));
+    const [token, setToken] = useState<string | null>(() => loadFromStorage("token", null));
+
     const navigate = useNavigate();
     const { setSelectedGenres, setSelectedProviders } = useNetfluxContext();
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
+        const storedToken = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
 
         if (storedToken && storedUser) {
             const verifyToken = async () => {
                 try {
-                    const response = await axiosInstance.get('/auth/verify');
+                    const response = await axiosInstance.get("/auth/verify");
                     if (response.status === 200) {
                         setToken(storedToken);
                         setUser(storedUser);
@@ -42,14 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     logout();
                 }
             };
-
             verifyToken();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     useEffect(() => {
-        console.log("AuthProvider: token updated", token);
+        // Utile pour debug
+        // console.log("AuthProvider: token updated", token);
     }, [token]);
 
     const login = (username: string, newToken: string) => {
@@ -62,8 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        setSelectedGenres([])
-        setSelectedProviders([])
+        setSelectedGenres([]);
+        setSelectedProviders([]);
         navigate("/login");
     };
 

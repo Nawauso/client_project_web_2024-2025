@@ -1,24 +1,26 @@
-//date : 06/10/2024
+// date : 06/10/2024
 
-//import LoginPage from "./LoginPage.tsx";
-//import NetfluxPage from "./NetfluxPage.tsx";
-import {Router} from "../router/Router.tsx";
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { Router } from "../router/Router";
 import { AuthProvider } from "./AuthContext";
-import {ContextNetfluxProvider} from "./ContextNetfluxProvider.tsx";
+import { ContextNetfluxProvider } from "./ContextNetfluxProvider";
 
-
+/**
+ * Ordre des providers :
+ * - ContextNetfluxProvider tout en haut (état global genres/providers/groupId)
+ * - BrowserRouter (navigateur)
+ * - AuthProvider (utilise useNavigate -> doit être sous BrowserRouter)
+ */
 function App() {
-
-  return (
-      <ContextNetfluxProvider>
-          <BrowserRouter>
-              <AuthProvider>
-                <Router/>
-              </AuthProvider>
-          </BrowserRouter>
-      </ContextNetfluxProvider>
-  )
+    return (
+        <ContextNetfluxProvider>
+            <BrowserRouter>
+                <AuthProvider>
+                    <Router />
+                </AuthProvider>
+            </BrowserRouter>
+        </ContextNetfluxProvider>
+    );
 }
 
-export default App
+export default App;

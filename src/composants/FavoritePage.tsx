@@ -4,7 +4,6 @@ import { useSwipeable } from "react-swipeable";
 import "../Ressources/Styles/StyleFavorite.scss";
 import axiosInstance from "./AxiosInstance";
 import { AuthContext } from "./AuthContext";
-import { useNetfluxContext } from "./ContextNetfluxProvider";
 
 interface Film {
     id: number;
@@ -17,7 +16,6 @@ interface Film {
 
 export default function FavoritePage() {
     const auth = useContext(AuthContext);
-    const { groupId } = useNetfluxContext(); // utile pour les votes de groupe
 
     const [films, setFilms] = useState<Film[]>([]);
     const [currentFilmIndex, setCurrentFilmIndex] = useState<number>(0);
@@ -25,14 +23,14 @@ export default function FavoritePage() {
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [triagedIds, setTriagedIds] = useState<Set<number>>(new Set()); // déjà likés/dislikés
-    const [skippedIds, setSkippedIds] = useState<number[]>([]);           // passés
+    const [triagedIds, setTriagedIds] = useState<Set<number>>(() => new Set<number>()); // déjà likés/dislikés
+    const [skippedIds, setSkippedIds] = useState<number[]>([]); // passés
     const [secondPass, setSecondPass] = useState<boolean>(false);
 
     const loadingMoreRef = useRef<boolean>(false);
 
     // Exclure temporairement tout ce qu’on a déjà vu ou trié côté client
-    const excludeIds = useMemo(() => {
+    const excludeIds = useMemo<number[]>(() => {
         const allSeen = new Set<number>([
             ...triagedIds,
             ...films.map((f) => f.id),
@@ -48,11 +46,11 @@ export default function FavoritePage() {
         setError(null);
 
         try {
-            // Le serveur récupère l’user depuis le JWT (AuthMiddleware)
+            // L’API récupère l’utilisateur via le token (AuthMiddleware)
             const response = await axiosInstance.post("/films/favorites", {
                 excludeIds,
                 limit: 20,
-                page: 1, // le repo déduplique déjà côté BE/FR
+                page: 1, // le repo déduplique côté BE/FR
             });
 
             const newFilms: Film[] = response.data ?? [];
@@ -74,20 +72,20 @@ export default function FavoritePage() {
         // Chargement initial (ou quand l’auth change d’état)
         setFilms([]);
         setCurrentFilmIndex(0);
-        setTriagedIds(new Set());
+        setTriagedIds(new Set<number>());
         setSkippedIds([]);
         setSecondPass(false);
-        fetchFilms();
+        void fetchFilms(); // explicite : on ignore volontairement la Promise
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth?.isAuthenticated]);
 
-    const saveGroupRank = async (filmId: number, delta: 1 | -1) => {
+    // Si tu utilises l’endpoint unifié /rank (perso + groupe), garde ceci.
+    // Sinon remets ton ancien appel /groups/:groupId/rank ou /users/rank.
+    const saveRank = async (filmId: number, delta: 1 | -1) => {
         try {
-            if (!groupId) return; // pas de groupe => on ignore l’envoi serveur
-            await axiosInstance.post(`/groups/${groupId}/rank`, { filmId, delta });
+            await axiosInstance.post(`/rank`, { filmId, delta });
         } catch (e) {
-            console.error("Erreur lors de l'enregistrement du rang groupe :", e);
-            // on ne bloque pas l’UX pour autant
+            console.error("Erreur lors de l'enregistrement du vote :", e);
         }
     };
 
@@ -118,7 +116,7 @@ export default function FavoritePage() {
         const film = films[currentFilmIndex];
         if (!film) return;
         setSwipeDirection("swipe-right");
-        await saveGroupRank(film.id, 1);
+        await saveRank(film.id, 1);
         setTriagedIds((prev) => new Set(prev).add(film.id));
         setSkippedIds((prev) => prev.filter((id) => id !== film.id));
         setTimeout(() => {
@@ -131,7 +129,7 @@ export default function FavoritePage() {
         const film = films[currentFilmIndex];
         if (!film) return;
         setSwipeDirection("swipe-left");
-        await saveGroupRank(film.id, -1);
+        await saveRank(film.id, -1);
         setTriagedIds((prev) => new Set(prev).add(film.id));
         setSkippedIds((prev) => prev.filter((id) => id !== film.id));
         setTimeout(() => {
